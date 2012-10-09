@@ -11,32 +11,31 @@ import server.ServerBootstrap;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
-@SuppressWarnings("restriction")
 public class ConnectionHandler implements HttpHandler {
-	
+
 	private Game game;
-	
-	
+
 	public ConnectionHandler(Game game) {
 		this.game = game;
 	}
-	
-	
+
 	public void handle(HttpExchange t) {
 
-		InputStream is;
-		OutputStream os;
-		String request, response;
-		int rByte;
+		InputStream is; //used for reading in the request data
+		OutputStream os; //used for writing out the response data
+		String request = "";
+		String response = "";
 
-		try {
+		String uri = t.getRequestURI().getPath();
+		String requestMethod = t.getRequestMethod();
 
-			String requestMethod = t.getRequestMethod();
+		//we only care about POST requests, everything else should be ignored
+		if (requestMethod.equalsIgnoreCase("POST")) {
 
-			if (requestMethod.equalsIgnoreCase("POST")) {
-
+			try {
 				StringBuilder buf = new StringBuilder();
 				is = t.getRequestBody();
+				int rByte;
 				while ((rByte = is.read()) != -1) {
 					buf.append((char) rByte);
 				}
@@ -47,25 +46,52 @@ public class ConnectionHandler implements HttpHandler {
 				} else {
 					request = null;
 				}
-
-			} else {
-				ServerBootstrap.killServer();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 
-			StringBuilder buf = new StringBuilder();
+		} else {
+			ServerBootstrap.killServer(); //everything else kills the server for now
+		}
+		
 
-			buf.append("Request recieved");
+		StringBuilder buf = new StringBuilder(); // put the response text in this buffer to be sent out at the end
+		int httpResponseCode = 200; // This is where the HTTP response code to send back to the client should go
+		
+		/*
+		 * code to respond to each type of request goes here
+		 * 
+		 * request is a String that hold JSON (or not) data to be parsed and acted upon
+		 * uri is a String that holds the request path (disregards http://hostname:port)
+		 * buf is a StringBuilder that you write your return data to in JSON format
+		 * httpResponseCode is an int that holds what response code you want to return
+		 */
+		
+		if (uri.equals("/connect")) {
+			
+		} else if (uri.equals("/game/status")) {
 
+		} else if (uri.equals("/game/move")) {
+
+		} else {
+			System.out.println("Recieved: " + request + " for: " + uri); //Not a default command
+		}
+
+		
+
+		//this section sends back the return data
+		try {
 			response = buf.toString();
-			t.sendResponseHeaders(200, response.length());
+			t.sendResponseHeaders(httpResponseCode, response.length());
 			os = t.getResponseBody();
 			os.write(response.getBytes());
 
 			os.close();
 			t.close();
-		} catch (IOException e) { // Something happened
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 	}
 
 }

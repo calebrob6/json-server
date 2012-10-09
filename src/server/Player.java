@@ -7,7 +7,7 @@ public class Player {
 	private String name;
 
 	public Player(int pCount) {
-		this.auth = (Double.toString(Math.floor(Math.random()*1000000)));
+		this.auth = (Double.toString(Math.floor(Math.random()*1000000))); //Random 6 digit number used as an auth for clients
 		this.setId(pCount);
 	}
 	

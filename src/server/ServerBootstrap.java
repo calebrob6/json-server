@@ -12,7 +12,6 @@ public class ServerBootstrap {
 	 * @param args
 	 * @throws IOException 
 	 */
-	@SuppressWarnings("restriction")
 	public static void main(String[] args) throws IOException {
 
 		Game game = new Game();
@@ -20,9 +19,7 @@ public class ServerBootstrap {
 		
 		
 		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
-		server.createContext("/connect", cHandle);
-		server.createContext("/game/status", cHandle);
-		server.createContext("/game/move", cHandle);
+		server.createContext("/", cHandle);
 		server.setExecutor(new GameExecutor());
 		server.start();
 
