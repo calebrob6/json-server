@@ -1,0 +1,1 @@
+This is a server developed to run AI competitions. It uses HTTP to pass and recieve JSON data.
