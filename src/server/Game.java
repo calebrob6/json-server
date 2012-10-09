@@ -1,12 +1,16 @@
 package server;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import org.json.JSONObject;
+
 public class Game {
 	
 	private static final int MAX_PLAYERS = 2;
 	
 	public volatile boolean running = false;
 	public Player[] players = new Player[MAX_PLAYERS];
-	private int pCount = 0;
+	private AtomicInteger pCount = new AtomicInteger(0);
 	
 
 	public Game() {
@@ -38,11 +42,11 @@ public class Game {
 	/**
 	 * @param players the players to set
 	 */
-	public int setPlayers() {
-		if(pCount<this.players.length){
-			this.players[pCount] = new Player(pCount);
-			pCount++;
-			return pCount-1;
+	public int addPlayer() {
+		if(pCount.get()<this.players.length){
+			this.players[pCount.get()] = new Player(pCount.get());
+			pCount.addAndGet(1);
+			return pCount.get()-1;
 		}else{
 			return -1;
 		}
@@ -55,6 +59,20 @@ public class Game {
 		public PlayerException(String msg){
 			super(msg);
 		}
+	}
+
+
+	public JSONObject connectPlayer() {
+		int me = addPlayer();
+		while(pCount.get()!=MAX_PLAYERS){
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		return players[me].toJSON();
+		
 	}
 
 }

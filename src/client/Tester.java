@@ -14,27 +14,32 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 		try {
-		    // Construct data
-		    String data = URLEncoder.encode("key1", "UTF-8") + "=" + URLEncoder.encode("value1", "UTF-8");
-		    data += "&" + URLEncoder.encode("key2", "UTF-8") + "=" + URLEncoder.encode("value2", "UTF-8");
+			// Construct data
+			// String data = URLEncoder.encode("key1", "UTF-8") + "=" +
+			// URLEncoder.encode("value1", "UTF-8");
+			// data += "&" + URLEncoder.encode("key2", "UTF-8") + "=" +
+			// URLEncoder.encode("value2", "UTF-8");
 
-		    // Send data
-		    URL url = new URL("http://localhost:8000/app");
-		    URLConnection conn = url.openConnection();
-		    conn.setDoOutput(true);
-		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-		    wr.write(data);
-		    wr.flush();
+			// Send data
+			URL url = new URL("http://localhost:8000/connect");
+			URLConnection conn = url.openConnection();
+			conn.setDoOutput(true);
+			OutputStreamWriter wr = new OutputStreamWriter(
+					conn.getOutputStream());
+			wr.write(0);
+			wr.flush();
 
-		    // Get the response
-		    BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		    String line;
-		    while ((line = rd.readLine()) != null) {
-		        System.out.println(line);
-		    }
-		    wr.close();
-		    rd.close();
+			// Get the response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+			while ((line = rd.readLine()) != null) {
+				System.out.println(line);
+			}
+			wr.close();
+			rd.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}

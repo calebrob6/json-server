@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 
+import org.json.JSONObject;
+
 import server.Game;
 import server.ServerBootstrap;
 
@@ -68,7 +70,9 @@ public class ConnectionHandler implements HttpHandler {
 		 */
 		
 		if (uri.equals("/connect")) {
-			
+			JSONObject playerData = game.connectPlayer();
+			buf.append(playerData.toString());
+			System.out.println(playerData.toString());
 		} else if (uri.equals("/game/status")) {
 
 		} else if (uri.equals("/game/move")) {
