@@ -56,7 +56,7 @@ public class ConnectionHandler implements HttpHandler {
 		} else {
 			ServerBootstrap.killServer(); //everything else kills the server for now
 		}
-		
+		System.out.println(request);
 
 		StringBuilder buf = new StringBuilder(); // put the response text in this buffer to be sent out at the end
 		int httpResponseCode = 200; // This is where the HTTP response code to send back to the client should go

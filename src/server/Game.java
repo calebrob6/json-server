@@ -85,8 +85,8 @@ public class Game {
 	}
 	
 	public JSONObject doCommand(JSONObject command) throws JSONException{
-		int id = command.getInt("id");
-		int auth = command.getInt("auth");
+		int id = Integer.parseInt(command.get("id").toString());
+		int auth = Integer.parseInt(command.get("auth").toString());
 		
 		if(getPlayerById(id).getAuth() == auth){
 			return gameHook.runCommand(command);

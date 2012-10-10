@@ -25,8 +25,10 @@ public class TicTacToe implements GenGame {
 		for (int i = 0; i < 3; i++) {
 			JSONArray collum = new JSONArray();
 			for (int j = 0; j < 3; j++) {
+				System.out.print(board[i][j] + " ");
 				collum.put(board[i][j]);
 			}
+			System.out.println("");
 			rBoard.put(collum);
 		}
 
@@ -41,9 +43,9 @@ public class TicTacToe implements GenGame {
 		boolean won = false;
 
 		try {
-			id = input.getInt("id");
-			x = input.getInt("x");
-			y = input.getInt("y");
+			id = Integer.parseInt(input.get("id").toString());
+			x = Integer.parseInt(input.get("x").toString());
+			y = Integer.parseInt(input.get("y").toString());
 		} catch (JSONException e) {
 			// the input is malformed
 			System.out.println("Malformed input JSON");

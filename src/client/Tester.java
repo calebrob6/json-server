@@ -7,6 +7,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 
+import org.json.JSONObject;
+
 public class Tester {
 
 	/**
@@ -14,19 +16,22 @@ public class Tester {
 	 */
 	public static void main(String[] args) {
 		try {
-			// Construct data
-			// String data = URLEncoder.encode("key1", "UTF-8") + "=" +
-			// URLEncoder.encode("value1", "UTF-8");
-			// data += "&" + URLEncoder.encode("key2", "UTF-8") + "=" +
-			// URLEncoder.encode("value2", "UTF-8");
+
+			JSONObject test = new JSONObject();
+			test.put("id", "0");
+			test.put("auth","657412");
+			test.put("x","0");
+			test.put("y","0");
+			
+			String data = URLEncoder.encode(test.toString(), "UTF-8");
 
 			// Send data
-			URL url = new URL("http://localhost:8000/connect");
+			URL url = new URL("http://localhost:8000/game/status");
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(
 					conn.getOutputStream());
-			wr.write(0);
+			wr.write(data);
 			wr.flush();
 
 			// Get the response
