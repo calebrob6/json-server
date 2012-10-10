@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLDecoder;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import server.Game;
@@ -76,6 +77,11 @@ public class ConnectionHandler implements HttpHandler {
 		} else if (uri.equals("/game/status")) {
 			buf.append(game.getStatus().toString());
 		} else if (uri.equals("/game/move")) {
+			try{
+				buf.append(game.doCommand(new JSONObject(request)));
+			}catch(JSONException e){
+				e.printStackTrace(); // something bad happened
+			}
 
 		} else {
 			System.out.println("Recieved: " + request + " for: " + uri); //Not a default command
