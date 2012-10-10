@@ -1,7 +1,11 @@
 package server;
 
+import game.GenGame;
+import game.TicTacToe;
+
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Game {
@@ -11,12 +15,14 @@ public class Game {
 	public volatile boolean running = false;
 	public Player[] players = new Player[MAX_PLAYERS];
 	private AtomicInteger pCount = new AtomicInteger(0);
+	private GenGame gameHook;
 	
 
 	public Game() {
 		for(int i=0;i<MAX_PLAYERS;i++){
 			players[i]=null;
 		}
+		gameHook = new TicTacToe();
 	}
 	
 	public Game(Player players[]) throws PlayerException {
@@ -31,12 +37,11 @@ public class Game {
 	/**
 	 * @return the players
 	 */
-	public Player getPlayer(int i) {
-		if(i<players.length){
-			return players[i];
-		}else{
-			return null;
+	public Player getPlayerById(int id) {
+		for(int i = 0;i<players.length;i++){
+			if(players[i].getId() == id) return players[i];
 		}
+		return null;
 	}
 
 	/**
@@ -73,6 +78,21 @@ public class Game {
 		}
 		return players[me].toJSON();
 		
+	}
+
+	public JSONObject getStatus() {
+		return gameHook.getStatus();
+	}
+	
+	public JSONObject doCommand(JSONObject command) throws JSONException{
+		int id = command.getInt("id");
+		int auth = command.getInt("auth");
+		
+		if(getPlayerById(id).getAuth() == auth){
+			return gameHook.runCommand(command);
+		}else{
+			return new JSONObject("{\"error\":1}"); //error 1 means id and auth don't match
+		}
 	}
 
 }

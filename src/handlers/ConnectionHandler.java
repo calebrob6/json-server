@@ -74,7 +74,7 @@ public class ConnectionHandler implements HttpHandler {
 			buf.append(playerData.toString());
 			System.out.println(playerData.toString());
 		} else if (uri.equals("/game/status")) {
-
+			buf.append(game.getStatus().toString());
 		} else if (uri.equals("/game/move")) {
 
 		} else {
