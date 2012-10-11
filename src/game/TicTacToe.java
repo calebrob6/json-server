@@ -31,8 +31,13 @@ public class TicTacToe implements GenGame {
 			System.out.println("");
 			rBoard.put(collum);
 		}
-
-		return new JSONObject(rBoard);
+		JSONObject rObj = new JSONObject();
+		try {
+			rObj.put("board", rBoard);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return rObj;
 	}
 
 	@Override
