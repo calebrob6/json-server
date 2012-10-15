@@ -1,4 +1,5 @@
 package server;
+import game.Simplexity;
 import handlers.ConnectionHandler;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class ServerBootstrap {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		Game game = new Game();
+		Game game = new Game(new Simplexity());
 		ConnectionHandler cHandle = new ConnectionHandler(game);
 		
 	

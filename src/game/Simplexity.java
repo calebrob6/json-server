@@ -14,7 +14,7 @@ public class Simplexity implements GenGame {
 	
 	public int board[][] = new int[WIDTH][HEIGHT];
 	
-	Simplexity(){
+	public Simplexity(){
 		System.out.println("Simplexity running");
 		for (int i = 0; i < board.length; i++) {
 			for (int j = 0; j < board[i].length; j++) {
@@ -39,6 +39,7 @@ public class Simplexity implements GenGame {
 		
 		if(y!=-1){
 			board[x][y] = mod+type; // play move if valid
+			System.out.println("Player "+whoseTurn+" played a move at ("+x+","+y+")");
 			if (whoseTurn == 1) { //change turn
 				whoseTurn = 0;
 			} else {
@@ -101,7 +102,7 @@ public class Simplexity implements GenGame {
 				}
 			}
 		}else{
-			error = 1;
+			error = 2; //error 2 means it isn't your turn
 		}
 	
 		

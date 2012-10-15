@@ -1,7 +1,7 @@
 package server;
 
 import game.GenGame;
-import game.TicTacToe;
+import game.Simplexity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -18,11 +18,11 @@ public class Game {
 	private GenGame gameHook;
 	
 
-	public Game() {
+	public Game(GenGame game) {
 		for(int i=0;i<MAX_PLAYERS;i++){
 			players[i]=null;
 		}
-		gameHook = new TicTacToe();
+		gameHook = game;
 	}
 	
 	public Game(Player players[]) throws PlayerException {
