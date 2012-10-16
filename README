@@ -28,3 +28,8 @@ Game and Player are both related to whatever game is implemented on top of this 
 
 The JSON in Java [package org.json] package by Douglas Crockford (douglas@crockford.com) is being used currently (with the restriction "The software shall be used for good, 
 not evil.")
+
+
+JSON API Structure:
+
+-{ID:<gameID>,COMMAND:[<commandName>,<arg1>,<arg2>,etc...]}

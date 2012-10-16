@@ -16,15 +16,11 @@ public class Simplexity implements GenGame {
 	
 	public Simplexity(){
 		System.out.println("Simplexity running");
-		for (int i = 0; i < board.length; i++) {
-			for (int j = 0; j < board[i].length; j++) {
-				board[i][j] = 0;
-			}
-		}
 	}
 	
 	
-	private boolean doMove(int x, int type){
+	//returns -1 on fail, else returns y coordinate
+	private int doMove(int x, int type){
 		int mod = (whoseTurn==0) ? 0 : 2;
 		int y = -1;
 		
@@ -36,7 +32,6 @@ public class Simplexity implements GenGame {
 			}
 		}
 
-		
 		if(y!=-1){
 			board[x][y] = mod+type; // play move if valid
 			System.out.println("Player "+whoseTurn+" played a move at ("+x+","+y+")");
@@ -46,10 +41,9 @@ public class Simplexity implements GenGame {
 				if (whoseTurn == 0)
 					whoseTurn = 1;
 			}
-			return true;
-		}else{
-			return false;
 		}
+		
+		return y;
 	}
 	
 	@Override
@@ -76,35 +70,48 @@ public class Simplexity implements GenGame {
 	}
 
 	@Override
-	public JSONObject runCommand(JSONObject input) {
+	public JSONObject doCommand(JSONObject input) {
 		
 		int id = -1;
-		int x = -1;
-		int type = -1;
-		int error = 0;
-		boolean won = false;
+
+		JSONArray command;
+		JSONObject retObj = new JSONObject();
 
 		try {
-			id = Integer.parseInt(input.get("id").toString());
-			x = Integer.parseInt(input.get("x").toString());
-			type = Integer.parseInt(input.get("type").toString());
+			id = input.getInt("ID");
+			command = input.getJSONArray("COMMAND");
 		} catch (JSONException e) {
 			// the input is malformed
+			/* HTTPResponse.FAIL */
 			System.out.println("Malformed input JSON");
 		}
 
+		String commandName = (String) command.getString(0);
 		
-		if (whoseTurn == id) {
-			if (doMove(x,type)) {
-				if (checkWin(id)) {
-					System.out.println("player " + id + " won!");
-					won = true;
+		if(commandName.equalsIgnoreCase("move")){
+			
+			int x = command.getInt(1);
+			int type = command.getInt(2);
+			if (whoseTurn == id) {
+				
+				int y = doMove(x,type);
+				
+				if (y!=-1) {
+					if (checkWin(x,y,id)) {
+						System.out.println("player " + id + " won!");
+						//won = true;
+					}
 				}
-			}
+			}	
+		}else if(commandName.equalsIgnoreCase("doworkson!")){
+			
+			boolean win=true; //thatswhatsup
 		}else{
-			error = 2; //error 2 means it isn't your turn
+			
+			//command not recognized
 		}
-	
+		
+		
 		
 		//return object creation
 		JSONObject rWhat = new JSONObject();
@@ -124,21 +131,16 @@ public class Simplexity implements GenGame {
 	
 	
 	//makes around 5,000 comparisons every run (worst case)
-	private boolean checkWin(int id){
+	private boolean checkWin(int x, int y, int id){
 		
-		for(int x=0;x<WIDTH;x++){
-			for(int y=0;y<HEIGHT;y++){
+		//for(int x=0;x<WIDTH;x++){
+			//for(int y=0;y<HEIGHT;y++){
 				
 				if(board[x][y]==(2*id)+1 || board[x][y]==(2*id)+2){ //we have a piece of the same color here
 					
 					int c[]=new int[8];
 					int d[]=new int[8];
 					int e[]=new int[8];
-					for(int i=0;i<c.length;i++){
-						c[i]=0;
-						d[i]=0;
-						e[i]=0;
-					}
 					
 					for(int i=0;i<=4;i++){ 
 						if(isLegal(x,y+i)){
@@ -246,8 +248,8 @@ public class Simplexity implements GenGame {
 						}
 					}
 				}
-			}
-		}
+			//}
+		//}
 		
 		return false; //we didn't find a winner
 	}
