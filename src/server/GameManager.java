@@ -58,7 +58,7 @@ public class GameManager {
 
 	public Object getStatus(JSONObject a) {
 		try {
-			return games.get(a.getInt("gameId")).getStatus();
+			return games.get(a.getInt("GAMEID")).getStatus();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -70,7 +70,7 @@ public class GameManager {
 
 	public JSONObject doCommand(JSONObject a) {
 		try {
-			return games.get(a.getInt("gameId")).doCommand(a);
+			return games.get(a.getInt("GAMEID")).doCommand(a);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
