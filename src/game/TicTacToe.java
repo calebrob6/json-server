@@ -41,7 +41,7 @@ public class TicTacToe implements GenGame {
 	}
 
 	@Override
-	public JSONObject runCommand(JSONObject input) {
+	public JSONObject doCommand(JSONObject input) {
 		int id = -1;
 		int x = -1;
 		int y = -1;
