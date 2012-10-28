@@ -72,17 +72,25 @@ public class ConnectionHandler implements HttpHandler {
 		 */
 		
 		if (uri.equals("/connect")) {
-			JSONObject playerData = game.doConnect()();
+			JSONObject playerData = game.doConnect();
 			buf.append(playerData.toString());
 			System.out.println(playerData.toString());
 		} else if (uri.equals("/game/status")) {
-			buf.append(game.getStatus().toString());
+			
+			try {
+				buf.append(game.getStatus(new JSONObject(request)).toString());
+			} catch (JSONException e) {
+				e.printStackTrace(); // something bad happened
+			}
+			
 		} else if (uri.equals("/game/move")) {
+			
 			try{
 				buf.append(game.doCommand(new JSONObject(request)));
 			}catch(JSONException e){
 				e.printStackTrace(); // something bad happened
 			}
+			
 
 		} else {
 			System.out.println("Recieved: " + request + " for: " + uri); //Not a default command

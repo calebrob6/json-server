@@ -5,6 +5,7 @@ import game.Simplexity;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class GameManager {
@@ -21,9 +22,10 @@ public class GameManager {
 
 
 	//will connect the player to the next available game or creates one if all games are full
-	public int doConnect(){
+	//TODO add error checking on connectResposne to see if it actually returned anything
+	public JSONObject doConnect(){
 		
-		JSONObject connectResponse;
+		JSONObject connectResponse = null;
 		boolean connected = false;
 		
 		for(int i=0;i<games.size();i++){
@@ -42,27 +44,35 @@ public class GameManager {
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			connectResponse = games.get(games.size()-1).connectPlayer();
+			connectResponse = games.get(games.size()-1).connectPlayer(games.size()-1);
 		}
 		
 		
-		return 0;
+		return connectResponse;
 		
 	}
 
 
 
 
-	public Object getStatus() {
-		// TODO Auto-generated method stub
+	public Object getStatus(JSONObject a) {
+		try {
+			return games.get(a.getInt("gameId")).getStatus();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 
 
 
-	public Object doCommand(JSONObject jsonObject) {
-		// TODO Auto-generated method stub
+	public JSONObject doCommand(JSONObject a) {
+		try {
+			return games.get(a.getInt("gameId")).doCommand(a);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
 	
