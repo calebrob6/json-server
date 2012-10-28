@@ -1,0 +1,13 @@
+Simplexity Protocol (in development):
+
+URL PATH:	/connect
+Arguments:	<none>
+Returns:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>}
+
+URL PATH:	/game/status
+Arguments:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>}
+Returns:	{"TURN":<id of whose turn it is>,"BOARD":<Array[WIDTH][LENGTH] of the game state>}
+
+URL PATH:	/game/move
+Arguments:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>,
+---------:	

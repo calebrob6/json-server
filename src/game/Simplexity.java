@@ -65,8 +65,8 @@ public class Simplexity implements GenGame {
 		}
 		JSONObject rObj = new JSONObject();
 		try {
-			rObj.put("board", rBoard);
-			rObj.put("turn", whoseTurn);
+			rObj.put("BOARD", rBoard);
+			rObj.put("TURN", whoseTurn);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
