@@ -72,7 +72,7 @@ public class Player {
 	
 	public JSONObject toJSON(){
 		try {
-			return new JSONObject("{\"id\":"+id+",\"auth\":"+auth+",\"gameId\":"+gameId+"}");
+			return new JSONObject("{\"ID\":"+id+",\"AUTH\":"+auth+",\"GAMEID\":"+gameId+"}");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

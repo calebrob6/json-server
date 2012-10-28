@@ -19,8 +19,19 @@ array of the board state.
 URL PATH:	/game/move
 Arguments:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>,
 ---------:	"COMMAND":["MOVE",<column #>,<piece type>]}
+Returns:	{"WON":<boolean>,"ERROR":<#>}
 
 The move command again takes the client's user id, auth, and game id along with a "COMMAND" parameter which is an array where the first value is a string containing the
 command name and the subsequent indexes containing arguments to pass to that command.
 
 The only command implemented in Simplexity is "MOVE" which takes the arguments: column # and type of piece (where 1 is the square piece and 2 is the circle piece)
+
+The return values are WON which is a boolean value saying if your move resulted in you winning and ERROR which is an integer that means one of the following:
+
+ERROR Values and Meaning:
+-1	Unspecified error
+0	All is good
+1	It isn't your turn to move
+2	Error placing piece
+3	Malformed JSON input
+4	Your userID and auth aren't right

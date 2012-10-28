@@ -122,9 +122,8 @@ public class Simplexity implements GenGame {
 		//return object creation
 		JSONObject rWhat = new JSONObject();
 		try {
-			rWhat.append("error", error);
-			rWhat.append("won", won);
-			rWhat.append("x", x);
+			rWhat.append("ERROR", error);
+			rWhat.append("WON", won);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			System.out.println("Error creating return object");

@@ -74,7 +74,7 @@ public class Game {
 				e.printStackTrace();
 			}
 		}
-		return players[me].toJSON();	
+		return players[me].toJSON();
 	}
 
 	public JSONObject getStatus() {
