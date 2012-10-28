@@ -10,16 +10,16 @@ import org.json.JSONObject;
 
 public class Game {
 	
-	private static final int MAX_PLAYERS = 2;
+	
 	
 	public volatile boolean running = false;
-	public Player[] players = new Player[MAX_PLAYERS];
+	public Player[] players = new Player[GameManager.MAX_PLAYERS];
 	private AtomicInteger pCount = new AtomicInteger(0);
 	private GenGame gameHook;
 	
 
 	public Game(GenGame game) {
-		for(int i=0;i<MAX_PLAYERS;i++){
+		for(int i=0;i<GameManager.MAX_PLAYERS;i++){
 			players[i]=null;
 		}
 		gameHook = game;
@@ -47,9 +47,9 @@ public class Game {
 	/**
 	 * @param players the players to set
 	 */
-	public int addPlayer() {
+	public int addPlayer(int gId) {
 		if(pCount.get()<this.players.length){
-			this.players[pCount.get()] = new Player(pCount.get());
+			this.players[pCount.get()] = new Player(pCount.get(),gId);
 			pCount.addAndGet(1);
 			return pCount.get()-1;
 		}else{
@@ -67,21 +67,24 @@ public class Game {
 	}
 
 
-	public JSONObject connectPlayer() {
-		int me = addPlayer();
-		while(pCount.get()!=MAX_PLAYERS){
+	public JSONObject connectPlayer(int gId) {
+		int me = addPlayer(gId);
+		while(pCount.get()!=GameManager.MAX_PLAYERS){
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		return players[me].toJSON();
-		
+		return players[me].toJSON();	
 	}
 
 	public JSONObject getStatus() {
 		return gameHook.getStatus();
+	}
+	
+	public AtomicInteger getNumPlayers(){
+		return pCount;
 	}
 	
 	public JSONObject doCommand(JSONObject command) throws JSONException{
@@ -89,7 +92,7 @@ public class Game {
 		int auth = Integer.parseInt(command.get("auth").toString());
 		
 		if(getPlayerById(id).getAuth() == auth){
-			return gameHook.runCommand(command);
+			return gameHook.doCommand(command);
 		}else{
 			return new JSONObject("{\"error\":1}"); //error 1 means id and auth don't match
 		}

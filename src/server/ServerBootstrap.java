@@ -16,7 +16,7 @@ public class ServerBootstrap {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		Game game = new Game(new Simplexity());
+		GameManager game = new GameManager(Simplexity.class);
 		ConnectionHandler cHandle = new ConnectionHandler(game);
 		
 	

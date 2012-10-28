@@ -5,14 +5,17 @@ import org.json.JSONObject;
 
 public class Player {
 	
+	private int gameId;
 	private final int auth;
 	private int id;
 	private String name;
 
-	public Player(int pCount) {
+	public Player(int pCount, int gId) {
 		this.auth = (int) Math.floor(Math.random()*1000000); //Random 6 digit number used as an auth for clients
 		this.setId(pCount);
+		this.gameId = gId;
 	}
+	
 	
 	
 	public static Player getPlayerById(int i){
@@ -51,6 +54,13 @@ public class Player {
 	public int getId() {
 		return id;
 	}
+	
+	/**
+	 * @return the gameId
+	 */
+	public int getGameId() {
+		return gameId;
+	}
 
 
 	/**
@@ -62,7 +72,7 @@ public class Player {
 	
 	public JSONObject toJSON(){
 		try {
-			return new JSONObject("{\"id\":"+id+",\"auth\":"+auth+"}");
+			return new JSONObject("{\"id\":"+id+",\"auth\":"+auth+",\"gameId\":"+gameId+"}");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

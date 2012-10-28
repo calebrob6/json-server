@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import server.Game;
+import server.GameManager;
 import server.ServerBootstrap;
 
 import com.sun.net.httpserver.HttpExchange;
@@ -16,9 +17,9 @@ import com.sun.net.httpserver.HttpHandler;
 
 public class ConnectionHandler implements HttpHandler {
 
-	private Game game;
+	private GameManager game;
 
-	public ConnectionHandler(Game game) {
+	public ConnectionHandler(GameManager game) {
 		this.game = game;
 	}
 
@@ -71,7 +72,7 @@ public class ConnectionHandler implements HttpHandler {
 		 */
 		
 		if (uri.equals("/connect")) {
-			JSONObject playerData = game.connectPlayer();
+			JSONObject playerData = game.doConnect()();
 			buf.append(playerData.toString());
 			System.out.println(playerData.toString());
 		} else if (uri.equals("/game/status")) {
