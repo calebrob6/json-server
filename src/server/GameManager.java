@@ -1,7 +1,6 @@
 package server;
 
 import game.GenGame;
-import game.Simplexity;
 
 import java.util.ArrayList;
 
@@ -14,7 +13,9 @@ public class GameManager {
 	private ArrayList<Game> games = new ArrayList<Game>();
 	private Class<GenGame> gameType;
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public GameManager(Class class1){
+		System.out.println("GameManager running");
 		this.gameType = class1;
 		
 	}

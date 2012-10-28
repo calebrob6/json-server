@@ -1,8 +1,6 @@
 package server;
 
 import game.GenGame;
-import game.Simplexity;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.json.JSONException;
@@ -92,7 +90,7 @@ public class Game {
 		int auth = Integer.parseInt(command.get("auth").toString());
 		
 		if(getPlayerById(id).getAuth() == auth){
-			return gameHook.doCommand(command);
+			return gameHook.runCommand(command);
 		}else{
 			return new JSONObject("{\"error\":1}"); //error 1 means id and auth don't match
 		}

@@ -13,6 +13,7 @@ def doRequest(jsonData,urlPathIndex):
     return json.loads(response)
 
 
+gameId = -1
 userData = {}
 userId = -1
 userAuth = -1
@@ -30,8 +31,10 @@ while True:
         userData = doRequest("",0)
         userId = userData[u'id'] #there is an "u" in front of the strings because they are unicode (u is the unicode flag)
         userAuth = userData[u'auth']
+        gameId = userData[u'gameId']
     elif userIn==2:
-        rBoard = doRequest("",1)
+        rData = {'gameId':gameId}
+        rBoard = doRequest(rData,1)
         board = rBoard[u'board']
         for a in board:
             for b in a:
@@ -45,7 +48,7 @@ while True:
 
         x = int(raw_input("Enter x coordinate: "))
         pType = int(raw_input("Enter type(1=square,2=circle): "))
-        rData = {'x':x,'type':pType,'id':userId,'auth':userAuth}
+        rData = {'x':x,'type':pType,'id':userId,'auth':userAuth,'gameId':gameId}
         request = doRequest(rData,2)
         if request[u'won'] == True:
             rBoard = doRequest("",1)
