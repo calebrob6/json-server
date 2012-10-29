@@ -77,8 +77,15 @@ public class Game {
 		return players[me].toJSON();
 	}
 
-	public JSONObject getStatus() {
-		return gameHook.getStatus();
+	public JSONObject getStatus(JSONObject a) throws JSONException {
+		int id = Integer.parseInt(a.get("ID").toString());
+		int auth = Integer.parseInt(a.get("AUTH").toString());
+		
+		if(getPlayerById(id).getAuth() == auth){
+			return gameHook.getStatus();
+		}else{
+			return new JSONObject("{\"ERROR\":4}"); //error 4 means id and auth don't match
+		}
 	}
 	
 	public AtomicInteger getNumPlayers(){
