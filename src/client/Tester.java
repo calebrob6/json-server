@@ -10,6 +10,7 @@ import java.net.URLEncoder;
 import org.json.JSONObject;
 
 import server.Logger;
+import server.Scoreboard;
 
 public class Tester {
 
@@ -57,14 +58,14 @@ public class Tester {
 		log.closeLog();
 		
 		
-		Logger.updateScores("Caleb Robinson", 5);
-		Logger.updateScores("DC DO work", 999);
-		Logger.updateScores("Bob", 1);
-		Logger.updateScores("Tim", 7);
-		Logger.updateScores("Fred", 8);
-		Logger.updateScores("Jim", 4);
+		Scoreboard.updateScores("Caleb Robinson", 5);
+		Scoreboard.updateScores("DC DO work", 999);
+		Scoreboard.updateScores("Bob", 1);
+		Scoreboard.updateScores("Tim", 7);
+		Scoreboard.updateScores("Fred", 8);
+		Scoreboard.updateScores("Jim", 4);
 		
-		Logger.printScores();
+		Scoreboard.printScores();
 
 	}
 
