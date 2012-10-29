@@ -1,15 +1,24 @@
-This is a server developed to run AI competitions. It uses HTTP to pass and receive JSON data.
+This is a RESTful server developed to run AI competitions. It uses HTTP REST to pass and receive JSON data.
 
 
 OBJECTIVE:
 -Generic object oriented stateless server/client implemented using JSON passed over HTTP POSTS
 
 
+DOCUMENTATION:
+
+See the /doc files for individual game API support
+
+
 TODO:
 -Log file out module for the Game
 -OOP'ify the ConnectionHandler more
 -Benchmark the HTTP Server under high volumes of requests
--Make everything as generic as possible
+-Test the API on a bunch of weird cases
+-Write a fully functional JAVA client
+-Implement RoundRobin support for the GameManager
+-Look into redo'ing GameExecutor
+-Fit the getStatus() command into the generic doCommand() API structure
 
 
 CLASS INFORMATION:
@@ -23,6 +32,7 @@ GameExecutor was implemented as a future development front that could regulate r
 
 Game and Player are both related to whatever game is implemented on top of this framework.
 
+GameManager is a class that manages an arbitrary amount of games, any new connections get fed to GameManager to get placed into a game
 
 
 
@@ -32,4 +42,4 @@ not evil.")
 
 JSON API Structure:
 
--{ID:<gameID>,COMMAND:[<commandName>,<arg1>,<arg2>,etc...]}
+{ID:<gameID>,COMMAND:[<commandName>,<arg1>,<arg2>,etc...]}

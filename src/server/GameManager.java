@@ -56,9 +56,9 @@ public class GameManager {
 
 
 
-	public Object getStatus(JSONObject a) {
+	public JSONObject getStatus(JSONObject a) {
 		try {
-			return games.get(a.getInt("GAMEID")).getStatus();
+			return games.get(a.getInt("GAMEID")).getStatus(a);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
