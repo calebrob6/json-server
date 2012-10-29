@@ -1,5 +1,6 @@
 package server;
 import game.Simplexity;
+import game.TicTacToe;
 import handlers.ConnectionHandler;
 
 import java.io.IOException;
@@ -16,7 +17,7 @@ public class ServerBootstrap {
 	 */
 	public static void main(String[] args) throws IOException {
 
-		GameManager game = new GameManager(Simplexity.class);
+		GameManager game = new GameManager(TicTacToe.class);
 		ConnectionHandler cHandle = new ConnectionHandler(game);
 		
 	

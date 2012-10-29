@@ -86,16 +86,17 @@ public class TicTacToeAI {
 					mCmd.put(2, p);
 					moveCmd.put("COMMAND", mCmd);
 					JSONObject moveRet = doRequest(moveCmd, "/game/move");
-				
-					if(moveRet.getBoolean("WON")){
+					System.out.println(moveRet);
+					if(moveRet.get("WON")=="true"){
 						System.out.println("AI WON!");
 						gameRunning = false;
 						break;
 					}
-					if(moveRet.getInt("ERROR")!=0){
+					/*
+					if(moveRet.get("ERROR")!=0){
 						System.out.println("ERROR CODE: "+moveRet.getInt("ERROR"));
 					}
-					
+					*/
 				
 				}
 				
@@ -139,7 +140,7 @@ public class TicTacToeAI {
 			String line;
 			while ((line = rd.readLine()) != null) {
 				response+=line;
-				System.out.println(line);
+				//System.out.println(line);
 			}
 			wr.close();
 			rd.close();
