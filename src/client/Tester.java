@@ -9,14 +9,16 @@ import java.net.URLEncoder;
 
 import org.json.JSONObject;
 
+import server.Logger;
+
 public class Tester {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		/*
 		try {
-
 			JSONObject test = new JSONObject();
 			test.put("id", "0");
 			test.put("auth","657412");
@@ -46,6 +48,16 @@ public class Tester {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
+		
+		Logger.updateScores("Caleb Robinson", 5);
+		Logger.updateScores("DC DO work", 999);
+		Logger.updateScores("Bob", 1);
+		Logger.updateScores("Tim", 7);
+		Logger.updateScores("Fred", 8);
+		Logger.updateScores("Jim", 4);
+		
+		Logger.printScores();
 
 	}
 
