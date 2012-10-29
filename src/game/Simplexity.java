@@ -4,7 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Simplexity implements GenGame {
+public class Simplexity implements GenGame, LoggerGame {
 
 	private static final int WIDTH = 7;
 	private static final int HEIGHT = 6;
@@ -257,6 +257,13 @@ public class Simplexity implements GenGame {
 	
 	private boolean isLegal(int x, int y){
 		return (x>=0 && x<WIDTH) && (y>=0 && y<HEIGHT);
+	}
+
+
+	@Override
+	public void logMessage(String s) {
+		
+		
 	}
 
 

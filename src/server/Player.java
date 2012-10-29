@@ -16,7 +16,12 @@ public class Player {
 		this.gameId = gId;
 	}
 	
-	
+	public Player(int pCount, int gId, String n) {
+		this.auth = (int) Math.floor(Math.random()*1000000); //Random 6 digit number used as an auth for clients
+		this.setId(pCount);
+		this.gameId = gId;
+		this.name = n;
+	}
 	
 	public static Player getPlayerById(int i){
 		//TODO
