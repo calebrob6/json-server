@@ -33,7 +33,8 @@ public class TicTacToe implements GenGame {
 		}
 		JSONObject rObj = new JSONObject();
 		try {
-			rObj.put("board", rBoard);
+			rObj.put("BOARD", rBoard);
+			rObj.put("TURN", whoseTurn);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -41,37 +42,45 @@ public class TicTacToe implements GenGame {
 	}
 
 	@Override
-	public JSONObject doCommand(JSONObject input) {
+	public JSONObject doCommand(JSONObject input) throws JSONException {
 		int id = -1;
 		int x = -1;
 		int y = -1;
+		int error = -1;
 		boolean won = false;
+		JSONArray command = null;
 
 		try {
-			id = Integer.parseInt(input.get("id").toString());
-			x = Integer.parseInt(input.get("x").toString());
-			y = Integer.parseInt(input.get("y").toString());
+			id = input.getInt("ID");
+			command = input.getJSONArray("COMMAND");
 		} catch (JSONException e) {
-			// the input is malformed
 			System.out.println("Malformed input JSON");
+			error = 3;
 		}
 
-		if (whoseTurn == id) {
-			if (checkMove(id, x, y)) {
-				doMove(id, x, y);
-				if (checkWin(id)) {
-					System.out.println("player " + id + " won!");
-					won = true;
+		String commandName = null;
+		commandName = (String) command.getString(0);
+
+		if (commandName.equalsIgnoreCase("move")) {
+			
+			x = command.getInt(1);
+			y = command.getInt(2);
+			
+			if (whoseTurn == id) {
+				if (checkMove(id, x, y)) {
+					doMove(id, x, y);
+					if (checkWin(id)) {
+						System.out.println("player " + id + " won!");
+						won = true;
+					}
 				}
 			}
 		}
 
 		JSONObject rWhat = new JSONObject();
 		try {
-			rWhat.append("error", 0);
-			rWhat.append("won", won);
-			rWhat.append("x", x);
-			rWhat.append("y", y);
+			rWhat.append("ERROR", error);
+			rWhat.append("WON", won);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			System.out.println("Error creating return object");
