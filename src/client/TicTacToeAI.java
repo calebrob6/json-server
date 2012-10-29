@@ -13,7 +13,7 @@ import java.net.URLEncoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class JSONTest {
+public class TicTacToeAI {
 
 	public static final String host = "http://localhost:8000";
 
@@ -63,7 +63,7 @@ public class JSONTest {
 			rd.close();
 			resp = new JSONObject(response);
 
-		} catch (UnsupportedEncodingException e) {
+		} catch (UnsupportedEncodingException e) {  //PRO error handling!
 
 		} catch (MalformedURLException e) {
 
