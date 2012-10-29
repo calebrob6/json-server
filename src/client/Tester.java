@@ -50,6 +50,13 @@ public class Tester {
 		}
 		*/
 		
+		Logger log = new Logger();
+		log.writeln("Testing");
+		log.writeln("this");
+		log.writeln("stuff");
+		log.closeLog();
+		
+		
 		Logger.updateScores("Caleb Robinson", 5);
 		Logger.updateScores("DC DO work", 999);
 		Logger.updateScores("Bob", 1);

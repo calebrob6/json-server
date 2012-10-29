@@ -2,86 +2,54 @@ package server;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.io.IOException;
 
 public class Logger {
 
 	public static final String logName = "log.txt";
 	public FileWriter fStream;
 	public BufferedWriter fOut;
-	public static HashMap<String, Integer> scoreboard = new HashMap<String, Integer>();
 
+	/*
+	 * There is a Logger class in the Java API but it seems way to involved for
+	 * what we want here
+	 */
 	public Logger() {
 
 		try {
-			fStream = new FileWriter(logName); //overwrites log file every time
+			fStream = new FileWriter(logName); // overwrites log file every time
 			fOut = new BufferedWriter(fStream);
-		} catch (Exception e){
+		} catch (Exception e) {
 			System.out.println("Error creating log file");
 		}
 
 	}
 
 	/*
-	 * @param k The name of the person to update
+	 * This method takes a line of text and writes it to the log file followed
+	 * by a new line
 	 * 
-	 * @param dv The change in score of the person
+	 * @param line Line of text to write to the log file
 	 */
-	public static void updateScores(String k, Integer dv) {
-		Integer a = scoreboard.get(k);
-		if (a == null) {
-			scoreboard.put(k, dv);
-		} else {
-			scoreboard.put(k, scoreboard.get(k) + dv);
+	public void writeln(String line) {
+		try {
+			fOut.write(line);
+			fOut.newLine();
+		} catch (IOException e) {
+			System.out.println("Error writing to log file");
 		}
-
 	}
-	
-	/*
-	 * Creates a copy of the scoreboard that is sorted then prints it out
-	 */
-	public static void printScores() {
-
-		Map<String, Integer> sorted = sortByValue(scoreboard);
-
-		Iterator<?> it = sorted.entrySet().iterator();
-		while (it.hasNext()) {
-			@SuppressWarnings("rawtypes")
-			Map.Entry pairs = (Map.Entry) it.next();
-			System.out.println(pairs.getKey() + " = " + pairs.getValue());
-			it.remove();
-		}
-
-	}
-	
 
 	/*
-	 * Yuck, java
+	 * This method is in here because the server should probably close the log
+	 * file after its done with it
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	static Map<String, Integer> sortByValue(Map<String, Integer> map) {
-		List list = new LinkedList(map.entrySet());
-		Collections.sort(list, new Comparator() {
-			public int compare(Object o1, Object o2) {
-				return -((Comparable) ((Map.Entry) (o1)).getValue())
-						.compareTo(((Map.Entry) (o2)).getValue());
-			}
-		});
-
-		Map<String, Integer> result = new LinkedHashMap<String, Integer>();
-		for (Iterator it = list.iterator(); it.hasNext();) {
-			Map.Entry<String, Integer> entry = (Map.Entry<String, Integer>) it
-					.next();
-			result.put(entry.getKey(), entry.getValue());
+	public void closeLog() {
+		try {
+			fOut.close();
+			fStream.close();
+		} catch (IOException e) {
+			System.out.println("Error closing log file");
 		}
-		return result;
 	}
-	
 }
