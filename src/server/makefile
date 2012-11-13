@@ -10,7 +10,8 @@ JC = javac
 CLASSES = \
         GameExecutor.java \
         Player.java \
-        Game.java
+        Game.java\ \
+        GameManager.java
 
 default: classes
 
