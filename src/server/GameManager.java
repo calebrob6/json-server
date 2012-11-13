@@ -42,7 +42,7 @@ public class GameManager {
 			// create new Game of the type that was passed to the game Manager
 			try {
 				games.add(new Game(gameType.newInstance()));
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			connectResponse = games.get(games.size()-1).connectPlayer(games.size()-1);
