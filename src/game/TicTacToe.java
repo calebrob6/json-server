@@ -8,6 +8,7 @@ public class TicTacToe implements GenGame {
 
 	private int board[][] = new int[3][3];
 	private int whoseTurn = 0;
+	private boolean gameRunning = false;
 
 	public TicTacToe() {
 		System.out.println("TicTacToe Game Running");
@@ -16,6 +17,7 @@ public class TicTacToe implements GenGame {
 				board[i][j] = -1;
 			}
 		}
+		gameRunning = true;
 	}
 
 	@Override
@@ -35,6 +37,7 @@ public class TicTacToe implements GenGame {
 		try {
 			rObj.put("BOARD", rBoard);
 			rObj.put("TURN", whoseTurn);
+			rObj.put("RUNNING", gameRunning);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -72,6 +75,7 @@ public class TicTacToe implements GenGame {
 					if (checkWin(id)) {
 						System.out.println("player " + id + " won!");
 						won = true;
+						gameRunning = false;
 					}
 				}
 			}
@@ -79,8 +83,8 @@ public class TicTacToe implements GenGame {
 
 		JSONObject rWhat = new JSONObject();
 		try {
-			rWhat.append("ERROR", error);
-			rWhat.append("WON", won);
+			rWhat.put("ERROR", error);
+			rWhat.put("WON", won);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			System.out.println("Error creating return object");

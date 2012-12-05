@@ -9,11 +9,13 @@ public class Simplexity implements GenGame, LoggerGame {
 	private static final int WIDTH = 7;
 	private static final int HEIGHT = 6;
 	private int whoseTurn = 0;
+	private boolean gameRunning = false;
 	
 	public int board[][] = new int[WIDTH][HEIGHT];
 	
 	public Simplexity(){
 		System.out.println("Simplexity running");
+		gameRunning = true;
 	}
 	
 	
@@ -61,6 +63,7 @@ public class Simplexity implements GenGame, LoggerGame {
 		try {
 			rObj.put("BOARD", rBoard);
 			rObj.put("TURN", whoseTurn);
+			rObj.put("RUNNING", gameRunning);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -103,6 +106,7 @@ public class Simplexity implements GenGame, LoggerGame {
 					if (checkWin(x,y,id)) {
 						System.out.println("player " + id + " won!");
 						won = true;
+						gameRunning = false;
 					}
 				}else{
 					error = 2;
@@ -122,8 +126,8 @@ public class Simplexity implements GenGame, LoggerGame {
 		//return object creation
 		JSONObject rWhat = new JSONObject();
 		try {
-			rWhat.append("ERROR", error);
-			rWhat.append("WON", won);
+			rWhat.put("ERROR", error);
+			rWhat.put("WON", won);
 		} catch (JSONException e) {
 			e.printStackTrace();
 			System.out.println("Error creating return object");

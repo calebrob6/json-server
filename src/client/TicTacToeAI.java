@@ -33,6 +33,10 @@ public class TicTacToeAI {
 		JSONObject nullObject = new JSONObject("{}");
 
 		JSONObject playerInfo = doRequest(nullObject, "/connect");
+		if (playerInfo == null) {
+			System.out.println("/connect request failed");
+			return;
+		}
 		id = playerInfo.getInt("ID");
 		gId = playerInfo.getInt("GAMEID");
 		auth = playerInfo.getInt("AUTH");
@@ -45,58 +49,58 @@ public class TicTacToeAI {
 		while (gameRunning) {
 
 			JSONObject gStatus = doRequest(getStatusObj, "/game/status");
+			gameRunning = gStatus.getBoolean("RUNNING");
 
-			if (gStatus.getInt("TURN") == id) {
+			int moves = 0;
+			JSONArray board = gStatus.getJSONArray("BOARD");
+			for (int i = 0; i < board.length(); i++) {
+				for (int j = 0; j < board.getJSONArray(i).length(); j++) {
+					map[i][j] = board.getJSONArray(i).getInt(j);
+					if (map[i][j] == -1)
+						moves++;
+				}
+			}
 
-				int moves = 0;
-				JSONArray board = gStatus.getJSONArray("BOARD");
+			if (moves == 0) {
+				System.out.println("No avaliable moves");
+				gameRunning = false;
+				break;
+			}
 
-				for (int i = 0; i < board.length(); i++) {
-					for (int j = 0; j < board.getJSONArray(i).length(); j++) {
-						map[i][j] = board.getJSONArray(i).getInt(j);
-						if (map[i][j] == -1)
-							moves++;
+			if (gStatus.getInt("TURN") == id && gameRunning) {
+
+				boolean haventFoundMove = true;
+				int q = -1, p = -1;
+				while (haventFoundMove) {
+
+					q = rand.nextInt(3);
+					p = rand.nextInt(3);
+					if (map[q][p] == -1) {
+						haventFoundMove = false;
 					}
 				}
-
-				if (moves == 0) {
-					System.out.println("No avaliable moves");
+				JSONObject moveCmd = new JSONObject();
+				JSONArray mCmd = new JSONArray();
+				moveCmd.put("ID", id);
+				moveCmd.put("GAMEID", gId);
+				moveCmd.put("AUTH", auth);
+				mCmd.put(0, "MOVE");
+				mCmd.put(1, q);
+				mCmd.put(2, p);
+				moveCmd.put("COMMAND", mCmd);
+				JSONObject moveRet = doRequest(moveCmd, "/game/move");
+				// System.out.println(moveRet);
+				System.out.println(moveRet.getBoolean("WON"));
+				if (moveRet.getBoolean("WON") == true) {
+					System.out.println("AI WON!");
 					gameRunning = false;
 					break;
-				} else {
-					boolean haventFoundMove = true;
-					int q = -1, p = -1;
-					while (haventFoundMove) {
-
-						q = rand.nextInt(3);
-						p = rand.nextInt(3);
-						if (map[q][p] == -1) {
-							haventFoundMove = false;
-						}
-					}
-					JSONObject moveCmd = new JSONObject();
-					JSONArray mCmd = new JSONArray();
-					moveCmd.put("ID", id);
-					moveCmd.put("GAMEID", gId);
-					moveCmd.put("AUTH", auth);
-					mCmd.put(0, "MOVE");
-					mCmd.put(1, q);
-					mCmd.put(2, p);
-					moveCmd.put("COMMAND", mCmd);
-					JSONObject moveRet = doRequest(moveCmd, "/game/move");
-					System.out.println(moveRet);
-					if (moveRet.get("WON") == "true") {
-						System.out.println("AI WON!");
-						gameRunning = false;
-						break;
-					}
-					/*
-					 * if(moveRet.get("ERROR")!=0){
-					 * System.out.println("ERROR CODE: "
-					 * +moveRet.getInt("ERROR")); }
-					 */
-
 				}
+				/*
+				 * if(moveRet.get("ERROR")!=0){
+				 * System.out.println("ERROR CODE: " +moveRet.getInt("ERROR"));
+				 * }
+				 */
 
 			} else {
 

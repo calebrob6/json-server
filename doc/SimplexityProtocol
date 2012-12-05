@@ -8,10 +8,9 @@ This command is what the client must call in order to join a game. This command 
 (however long that is). The server will then return a JSON data structure with the client's id, authentication number, and game id. These values will need to be passed
 to all subsequent API calls so that the server can recognize who is who.
 
-
 URL PATH:	/game/status
 Arguments:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>}
-Returns:	{"TURN":<id of whose turn it is>,"BOARD":<Array[WIDTH][LENGTH] of the game state>} or null if there is an error
+Returns:	{"TURN":<id of whose turn it is>,"BOARD":<Array[WIDTH][LENGTH] of the game state>,"RUNNING":<boolean that says whether the game is running>} or null if there is an error
 
 This command takes the standard user id, auth, and game id integers as input and returns a JSON object that contains the ID of whose turn it is as well as a 2-dimensional
 array of the board state.
