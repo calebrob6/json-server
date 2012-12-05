@@ -11,14 +11,16 @@ See the /doc files for individual game API support
 
 
 TODO:
--Log file out module for the Game
+-Log file out module for the Game (DONE)
 -OOP'ify the ConnectionHandler more
 -Benchmark the HTTP Server under high volumes of requests
 -Test the API on a bunch of weird cases
--Write a fully functional JAVA client
+-Write a fully functional JAVA client (DONE)
 -Implement RoundRobin support for the GameManager
--Look into redo'ing GameExecutor
+-Look into redo'ing GameExecutor (DONE)
+ -Not necessary because the FixedThreadPool(n) can automatically handle n connections simulotaneously, no need to redefine that functionality
 -Fit the getStatus() command into the generic doCommand() API structure
+-Project wide debugging statements that can be quickly turned on/off (DONE)
 
 
 CLASS INFORMATION:
