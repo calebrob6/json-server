@@ -8,6 +8,7 @@ import java.net.URLDecoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import server.Debugger;
 import server.GameManager;
 import server.ServerBootstrap;
 
@@ -56,7 +57,9 @@ public class ConnectionHandler implements HttpHandler {
 		} else {
 			ServerBootstrap.killServer(); //everything else kills the server for now
 		}
-		System.out.println(request);
+		
+		
+		Debugger.out(request);
 
 		StringBuilder buf = new StringBuilder(); // put the response text in this buffer to be sent out at the end
 		int httpResponseCode = 200; // This is where the HTTP response code to send back to the client should go
@@ -73,7 +76,7 @@ public class ConnectionHandler implements HttpHandler {
 		if (uri.equals("/connect")) {
 			JSONObject playerData = game.doConnect();
 			buf.append(playerData.toString());
-			System.out.println(playerData.toString());
+			Debugger.out(playerData.toString());
 		} else if (uri.equals("/game/status")) {
 			
 			try {
@@ -92,7 +95,7 @@ public class ConnectionHandler implements HttpHandler {
 			
 
 		} else {
-			System.out.println("Recieved: " + request + " for: " + uri); //Not a default command
+			Debugger.out("Recieved: " + request + " for: " + uri); //Not a default command
 		}
 
 		

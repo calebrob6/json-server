@@ -4,6 +4,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import server.Debugger;
+import server.Scoreboard;
+
 public class TicTacToe implements GenGame {
 
 	private int board[][] = new int[3][3];
@@ -11,7 +14,7 @@ public class TicTacToe implements GenGame {
 	private boolean gameRunning = false;
 
 	public TicTacToe() {
-		System.out.println("TicTacToe Game Running");
+		Debugger.out("TicTacToe Game Running");
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				board[i][j] = -1;
@@ -27,10 +30,10 @@ public class TicTacToe implements GenGame {
 		for (int i = 0; i < 3; i++) {
 			JSONArray collum = new JSONArray();
 			for (int j = 0; j < 3; j++) {
-				System.out.print(board[i][j] + " ");
+				Debugger.out(board[i][j] + " ",0);
 				collum.put(board[i][j]);
 			}
-			System.out.println("");
+			Debugger.out("");
 			rBoard.put(collum);
 		}
 		JSONObject rObj = new JSONObject();
@@ -57,7 +60,7 @@ public class TicTacToe implements GenGame {
 			id = input.getInt("ID");
 			command = input.getJSONArray("COMMAND");
 		} catch (JSONException e) {
-			System.out.println("Malformed input JSON");
+			Debugger.out("Malformed input JSON");
 			error = 3;
 		}
 
@@ -73,7 +76,8 @@ public class TicTacToe implements GenGame {
 				if (checkMove(id, x, y)) {
 					doMove(id, x, y);
 					if (checkWin(id)) {
-						System.out.println("player " + id + " won!");
+						Debugger.out("player " + id + " won!");
+						Scoreboard.incrementScore(Integer.toString(input.getInt("GAMEID")));
 						won = true;
 						gameRunning = false;
 					}
@@ -87,7 +91,7 @@ public class TicTacToe implements GenGame {
 			rWhat.put("WON", won);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			System.out.println("Error creating return object");
+			Debugger.out("Error creating return object");
 		}
 		return rWhat;
 	}

@@ -23,9 +23,20 @@ public class Scoreboard {
 		if (a == null) {
 			scoreboard.put(k, dv);
 		} else {
-			scoreboard.put(k, scoreboard.get(k) + dv);
+			scoreboard.put(k, a + dv);
 		}
 
+	}
+	
+	public static void incrementScore(String k){
+		
+		Integer a = scoreboard.get(k);
+		if (a == null) {
+			scoreboard.put(k, 1);
+		} else {
+			scoreboard.put(k, a+1);
+		}
+		printScores();
 	}
 
 	/*
