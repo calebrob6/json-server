@@ -2,7 +2,6 @@ package server;
 import game.Simplexity;
 import game.TicTacToe;
 import handlers.ConnectionHandler;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;

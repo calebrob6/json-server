@@ -3,7 +3,7 @@ package server;
 public class Debugger {
 	
 	
-	static public final boolean DEBUG = false;
+	static public final boolean DEBUG = true;
 	
 	public static void out(String m){
 		if(DEBUG){
