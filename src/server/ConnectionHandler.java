@@ -1,4 +1,4 @@
-package handlers;
+package server;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,9 +8,6 @@ import java.net.URLDecoder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import server.Debugger;
-import server.GameManager;
-import server.ServerBootstrap;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -55,6 +52,9 @@ public class ConnectionHandler implements HttpHandler {
 			}
 
 		} else {
+			if(Debugger.DEBUG){
+				System.err.println("We recieved something other then a POST request");
+			}
 			ServerBootstrap.killServer(); //everything else kills the server for now
 		}
 		

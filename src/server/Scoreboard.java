@@ -13,9 +13,11 @@ public class Scoreboard {
 
 	public static HashMap<String, Integer> scoreboard = new HashMap<String, Integer>();
 
-	/*
-	 * @param k The name of the person to update
+	/**
 	 * 
+	 * Updates a given players score
+	 * 
+	 * @param k The name of the person to update
 	 * @param dv The change in score of the person
 	 */
 	public static void updateScores(String k, Integer dv) {
@@ -60,7 +62,7 @@ public class Scoreboard {
 	 * Yuck, java
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	static Map<String, Integer> sortByValue(Map<String, Integer> map) {
+	private static Map<String, Integer> sortByValue(Map<String, Integer> map) {
 		List list = new LinkedList(map.entrySet());
 		Collections.sort(list, new Comparator() {
 			public int compare(Object o1, Object o2) {
