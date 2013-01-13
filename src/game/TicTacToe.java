@@ -14,7 +14,9 @@ public class TicTacToe implements GenGame {
 	private boolean gameRunning = false;
 
 	public TicTacToe() {
-		Debugger.out("TicTacToe Game Running");
+		if(Debugger.DEBUG){
+			System.out.println("TicTacToe Game Running");
+		}
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				board[i][j] = -1;
@@ -30,10 +32,8 @@ public class TicTacToe implements GenGame {
 		for (int i = 0; i < 3; i++) {
 			JSONArray collum = new JSONArray();
 			for (int j = 0; j < 3; j++) {
-				Debugger.out(board[i][j] + " ",0);
 				collum.put(board[i][j]);
 			}
-			Debugger.out("");
 			rBoard.put(collum);
 		}
 		JSONObject rObj = new JSONObject();
@@ -60,7 +60,7 @@ public class TicTacToe implements GenGame {
 			id = input.getInt("ID");
 			command = input.getJSONArray("COMMAND");
 		} catch (JSONException e) {
-			Debugger.out("Malformed input JSON");
+			System.err.println("Malformed JSON");
 			error = 3;
 		}
 
@@ -73,10 +73,10 @@ public class TicTacToe implements GenGame {
 			y = command.getInt(2);
 			
 			if (whoseTurn == id) {
-				if (checkMove(id, x, y)) {
+				if (checkMove(x, y)) {
 					doMove(id, x, y);
 					if (checkWin(id)) {
-						Debugger.out("player " + id + " won!");
+						System.out.println("Player " + id + " won"); 
 						Scoreboard.incrementScore(Integer.toString(input.getInt("GAMEID")));
 						won = true;
 						gameRunning = false;
@@ -91,11 +91,18 @@ public class TicTacToe implements GenGame {
 			rWhat.put("WON", won);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			Debugger.out("Error creating return object");
+			System.err.println("Error creating return object");
 		}
 		return rWhat;
 	}
 
+	/**
+	 * 
+	 * Yuck
+	 * 
+	 * @param id Checks to see if the given player with playerID id has won
+	 * @return whether or not the player has won
+	 */
 	private boolean checkWin(int id) {
 		if (board[0][0] == id && board[1][0] == id && board[2][0] == id)
 			return true;
@@ -119,6 +126,14 @@ public class TicTacToe implements GenGame {
 		return false;
 	}
 
+	/**
+	 * 
+	 * Does the move and switches turns
+	 * 
+	 * @param id The id of the player
+	 * @param x X coordinate to play at
+	 * @param y Y coordinate to play at
+	 */
 	private void doMove(int id, int x, int y) {
 		board[x][y] = id;
 		if (whoseTurn == 1) {
@@ -129,7 +144,15 @@ public class TicTacToe implements GenGame {
 		}
 	}
 
-	private boolean checkMove(int id, int x, int y) {
+	/**
+	 * 
+	 * Checks to make sure the board is empty at the given coordinates
+	 * 
+	 * @param x The x coordinate to check
+	 * @param y The y coordinate to check
+	 * @return Whether or not the move is available
+	 */
+	private boolean checkMove(int x, int y) {
 		return (board[x][y] == -1);
 	}
 

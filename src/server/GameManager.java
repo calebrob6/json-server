@@ -15,7 +15,9 @@ public class GameManager {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public GameManager(Class class1){
-		Debugger.out("GameManager running");
+		if(Debugger.DEBUG){
+			System.out.println("GameManager running");
+		}
 		this.gameType = class1;
 		
 	}
