@@ -1,0 +1,71 @@
+<project basedir="." default="build" name="json-server">
+	
+    <property environment="env"/>
+    <property name="debuglevel" value="source,lines,vars"/>
+    <property name="target" value="1.7"/>
+    <property name="source" value="1.7"/>
+	
+    <path id="json-server.classpath">
+        <pathelement location="bin"/>
+    	<pathelement location="lib/json-library.jar"/>
+    </path>
+	
+    <target name="init">
+        <mkdir dir="bin"/>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="src">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="bin">
+            <fileset dir="lib">
+                <exclude name="**/*.java"/>
+            </fileset>
+        </copy>
+    </target>
+    	
+    <target name="clean">
+        <delete dir="bin"/>
+    </target>
+	
+    <target depends="clean" name="cleanall"/>
+    	
+    <target depends="build-subprojects,build-project" name="build"/>
+	
+    <target name="build-subprojects"/>
+	
+    <target depends="init" name="build-project">
+        <echo message="${ant.project.name}: ${ant.file}"/>
+        <javac debug="true" debuglevel="${debuglevel}" destdir="bin" includeantruntime="false" source="${source}" target="${target}">
+            <src path="src"/>
+            <src path="lib"/>
+            <classpath refid="json-server.classpath"/>
+        </javac>
+    </target>
+	
+    <target description="Build all projects which reference this project. Useful to propagate changes." name="build-refprojects"/>
+	
+    <target name="JSONTest">
+        <java classname="client.JSONTest" failonerror="true" fork="yes">
+            <classpath refid="json-server.classpath"/>
+        </java>
+    </target>
+	
+    <target name="ServerBootstrap">
+        <java classname="server.ServerBootstrap" failonerror="true" fork="yes">
+            <classpath refid="json-server.classpath"/>
+        </java>
+    </target>
+	
+    <target name="TicTacToeAI">
+        <java classname="client.TicTacToeAI" failonerror="true" fork="yes">
+            <classpath refid="json-server.classpath"/>
+        </java>
+    </target>
+	
+	<target name="createjar">
+		<mkdir dir="bin/jar"/>
+	    <jar destfile="bin/jar/Sever.jar" basedir="bin/" />
+	</target> 
+	
+</project>
