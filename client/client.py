@@ -17,6 +17,7 @@ userData = {}
 userId = -1
 userAuth = -1
 userIn = -1
+gameId = -1
 
 while True:
     print "(1) Connect"
@@ -28,11 +29,12 @@ while True:
 
     if userIn==1:
         userData = doRequest("",0)
-        userId = userData[u'id'] #there is an "u" in front of the strings because they are unicode (u is the unicode flag)
-        userAuth = userData[u'auth']
+        userId = userData[u'ID'] #there is an "u" in front of the strings because they are unicode (u is the unicode flag)
+        userAuth = userData[u'AUTH']
+        gameId = userData[u'GAMEID']
     elif userIn==2:
-        rBoard = doRequest("",1)
-        board = rBoard[u'board']
+        rBoard = doRequest({'GAMEID':gameId,"ID":userId,"AUTH":userAuth},1)
+        board = rBoard[u'BOARD']
         for a in board:
             for b in a:
                 if b==-1:
@@ -45,11 +47,11 @@ while True:
 
         x = int(raw_input("Enter x coordinate: "))
         y = int(raw_input("Enter y coordinate: "))
-        rData = {'x':x,'y':y,'id':userId,'auth':userAuth}
+        rData = {"COMMAND":["MOVE",x,y],'GAMEID':gameId,"ID":userId,"AUTH":userAuth}
         request = doRequest(rData,2)
-        if request[u'won'] == True:
+        if request[u'WON'] == True:
             rBoard = doRequest("",1)
-            board = rBoard[u'board']
+            board = rBoard[u'BOARD']
             for a in board:
                 for b in a:
                     if b==-1:
@@ -58,7 +60,7 @@ while True:
                         print str(b) + " ",
                 print " "
             print " "
-        elif request[u'error']==0:
+        elif request[u'ERROR']==0:
             print "Move accepted"
         else:
             print "Error"

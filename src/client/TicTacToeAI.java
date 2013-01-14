@@ -66,6 +66,11 @@ public class TicTacToeAI {
 				gameRunning = false;
 				break;
 			}
+			
+			if(gStatus.getInt("WHOWON")!=-1 && gStatus.getInt("WHOWON")!=id){
+				System.out.println("We lost :(");
+				break;
+			}
 
 			if (gStatus.getInt("TURN") == id && gameRunning) {
 
@@ -89,18 +94,12 @@ public class TicTacToeAI {
 				mCmd.put(2, p);
 				moveCmd.put("COMMAND", mCmd);
 				JSONObject moveRet = doRequest(moveCmd, "/game/move");
-				// System.out.println(moveRet);
 				System.out.println(moveRet.getBoolean("WON"));
 				if (moveRet.getBoolean("WON") == true) {
-					System.out.println("AI WON!");
+					System.out.println("I WON!");
 					gameRunning = false;
 					break;
 				}
-				/*
-				 * if(moveRet.get("ERROR")!=0){
-				 * System.out.println("ERROR CODE: " +moveRet.getInt("ERROR"));
-				 * }
-				 */
 
 			} else {
 
@@ -109,7 +108,7 @@ public class TicTacToeAI {
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
-					e.printStackTrace(); // insomnia yo
+					e.printStackTrace();
 				}
 			}
 
@@ -155,7 +154,6 @@ public class TicTacToeAI {
 		}
 
 		return resp;
-
 	}
 
 }

@@ -33,7 +33,7 @@ public class Game {
 
 
 	/**
-	 * @return the players
+	 * @return The players
 	 */
 	public Player getPlayerById(int id) {
 		for(int i = 0;i<players.length;i++){
@@ -43,7 +43,7 @@ public class Game {
 	}
 
 	/**
-	 * @param players the players to set
+	 * @param players The players to set
 	 */
 	public int addPlayer(int gId) {
 		if(pCount.get()<this.players.length){

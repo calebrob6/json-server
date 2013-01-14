@@ -36,21 +36,19 @@ public class ServerBootstrap {
 		} catch (BindException e) {
 			if (Debugger.DEBUG) {
 				e.printStackTrace();
-				System.exit(-1);
 			} else {
 				System.err.println("Couldn't bind to port 8000, most likely there is another instance of this server running");
 				System.err.println("Exiting");
-				System.exit(-1);
 			}
+			System.exit(-1);
 		} catch (IOException e) {
 			if (Debugger.DEBUG) {
 				e.printStackTrace();
-				System.exit(-1);
 			} else {
 				System.err.println("Creating the server failed and is not a BindException, enable debugging for more information");
 				System.err.println("Exiting");
-				System.exit(-1);
 			}
+			System.exit(-1);
 		}
 	}
 

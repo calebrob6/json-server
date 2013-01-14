@@ -12,6 +12,7 @@ public class TicTacToe implements GenGame {
 	private int board[][] = new int[3][3];
 	private int whoseTurn = 0;
 	private boolean gameRunning = false;
+	private int whoWon = -1;
 
 	public TicTacToe() {
 		if(Debugger.DEBUG){
@@ -41,6 +42,7 @@ public class TicTacToe implements GenGame {
 			rObj.put("BOARD", rBoard);
 			rObj.put("TURN", whoseTurn);
 			rObj.put("RUNNING", gameRunning);
+			rObj.put("WHOWON", whoWon);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -75,10 +77,12 @@ public class TicTacToe implements GenGame {
 			if (whoseTurn == id) {
 				if (checkMove(x, y)) {
 					doMove(id, x, y);
+					error = 0;
 					if (checkWin(id)) {
 						System.out.println("Player " + id + " won"); 
 						Scoreboard.incrementScore(Integer.toString(input.getInt("GAMEID")));
 						won = true;
+						whoWon = id;
 						gameRunning = false;
 					}
 				}
