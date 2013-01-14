@@ -9,6 +9,8 @@ DOCUMENTATION:
 
 See the /doc files for individual game API support
 
+To build the server and clients use "ant build", to run the server use "ant ServerBootstrap", to run the test TicTacToeAI use "ant TicTacToeAI".
+
 
 TODO:
 -Log file out module for the Game (DONE)
@@ -40,8 +42,3 @@ GameManager is a class that manages an arbitrary amount of games, any new connec
 
 The JSON in Java [package org.json] package by Douglas Crockford (douglas@crockford.com) is being used currently (with the restriction "The software shall be used for good, 
 not evil.")
-
-
-JSON API Structure:
-
-{ID:<gameID>,COMMAND:[<commandName>,<arg1>,<arg2>,etc...]}
