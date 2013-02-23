@@ -145,7 +145,7 @@ public class Checkers implements GenGame {
 		boolean areJumps = (coordList.size()==2) ? false: true;
 		
 	
-		/*	
+			
 		if (!areJumps) {
 			int x2 = coordList.get(0);
 			int y2 = coordList.get(1);
@@ -169,10 +169,8 @@ public class Checkers implements GenGame {
 			}
 
 		}
-
-		return false;
-	*/
-	return true;
+		
+	return false;
 	}
 
 	private void doMove(int x1, int y1, ArrayList<Integer> coordList) {

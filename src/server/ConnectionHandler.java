@@ -116,12 +116,13 @@ public class ConnectionHandler implements HttpHandler {
 			}
 			
 			Headers h = t.getResponseHeaders();
-		    h.add("Content-Type", "application/json");
+		    h.add("Content-Type", "application/jsonp; charset=UTF-8");
+		    h.add("Access-Control-Allow-Origin","*");
 			
 			t.sendResponseHeaders(httpResponseCode, response.length());
 			os = t.getResponseBody();
-			os.write(response.getBytes());
-
+			os.write(response.getBytes("UTF-8"));
+			os.flush();
 			os.close();
 			t.close();
 		} catch (IOException e) {
