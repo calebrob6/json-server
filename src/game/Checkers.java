@@ -90,7 +90,9 @@ public class Checkers implements GenGame {
 				
 				for(int i=3;i<command.length()-3;i++){
 					coordList.add(command.getInt(i)); //this should be atleast 2
+					coordList.get(i);
 				}
+				
 				
 				if(validMove(x1,y1,coordList)){
 					doMove(x1,y1,coordList);
@@ -140,6 +142,9 @@ public class Checkers implements GenGame {
 	}
 
 	private boolean validMove(int x1, int y1, ArrayList<Integer> coordList) {
+		
+		System.out.println("Checking for valid move");
+		
 		
 		boolean areJumps = (coordList.size()==2) ? false: true;
 		

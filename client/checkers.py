@@ -45,9 +45,11 @@ while True:
         print " "
     elif userIn==3:
 
-        x = int(raw_input("Enter x coordinate: "))
-        y = int(raw_input("Enter y coordinate: "))
-        rData = {"COMMAND":["MOVE",x,y],'GAMEID':gameId,"ID":userId,"AUTH":userAuth}
+        x1 = int(raw_input("Enter x coordinate(piece): "))
+        y1 = int(raw_input("Enter y coordinate(piece): "))
+        x2 = int(raw_input("Enter x coordinate(move): "))
+        y2 = int(raw_input("Enter y coordinate(move): "))
+        rData = {"COMMAND":["MOVE",x1,y1,x2,y2],'GAMEID':gameId,"ID":userId,"AUTH":userAuth}
         request = doRequest(rData,2)
         if request[u'WON'] == True:
             rBoard = doRequest("",1)

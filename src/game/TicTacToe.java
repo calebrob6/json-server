@@ -85,7 +85,11 @@ public class TicTacToe implements GenGame {
 						whoWon = id;
 						gameRunning = false;
 					}
+				}else{
+					error = 2;
 				}
+			}else{
+				error = 1;
 			}
 		}
 
