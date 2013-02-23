@@ -1,5 +1,7 @@
 package game;
 
+import java.util.ArrayList;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,14 +12,14 @@ import server.Scoreboard;
 public class Checkers implements GenGame {
 
 	private int board[][] = {
-			{ 1, 0, 1, 0, 1, 0, 1, 0 }, 
-			{ 0, 1, 0, 1, 0, 1, 0, 1 }, 
-			{ 1, 0, 1, 0, 1, 0, 1, 0 },
-			{ 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 2, 0, 2, 0, 2, 0, 2 },
-			{ 2, 0, 2, 0, 2, 0, 2, 0 },
-			{ 0, 2, 0, 2, 0, 2, 0, 2 }
+			{ 0, -1, 0, -1, 0, -1, 0, -1 }, 
+			{ -1, 0, -1, 0, -1, 0, -1, 0 }, 
+			{ 0, -1, 0, -1, 0, -1, 0, -1 },
+			{ -1, -1, -1, -1, -1, -1, -1, -1 }, 
+			{ -1, -1, -1, -1, -1, -1, -1, -1 }, 
+			{ -1, 1, -1, 1, -1, 1, -1, 1 },
+			{ 1, -1, 1, -1, 1, -1, 1, -1 },
+			{ -1, 1, -1, 1, -1, 1, -1, 1 }
 			};
 	private int whoseTurn = 0;
 	private boolean gameRunning = false;
@@ -80,18 +82,30 @@ public class Checkers implements GenGame {
 		commandName = (String) command.getString(0);
 
 		if (commandName.equalsIgnoreCase("move")) {
+	
 			
-			x1 = command.getInt(1);
-			y1 = command.getInt(2);
-			x2 = command.getInt(3);
-			y2 = command.getInt(4);
-			
-			if(doMove(x1,y1,x2,y2)){
+			if (whoseTurn-1 == id) {
 				
-			}else{
-				//invalid move
+				x1 = command.getInt(1);
+				y1 = command.getInt(2);
+
+				ArrayList<Integer> coordList = new ArrayList<Integer>();
+				
+				for(int i=3;i<command.length()-3;i++){
+					coordList.add(command.getInt(i)); //this should be atleast 2
+				}
+				
+				if(validMove(x1,y1,coordList)){
+					doMove(x1,y1,coordList);
+					System.out.println("Move successful");
+					
+					
+				}else{
+					//invalid move
+				}
+				
 			}
-			
+				
 			
 		}
 
@@ -108,57 +122,46 @@ public class Checkers implements GenGame {
 		
 	}
 
-	private boolean doMove(int x1, int y1, int x2, int y2) {
+	private boolean validMove(int x1, int y1, ArrayList<Integer> coordList) {
 		
-		
-		if(board[x1][y1] == whoseTurn || board[x1][y1] == whoseTurn + 2){ //its our piece
-			
-			if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
-				if( ((y2==y1+((whoseTurn==1)?1:-1)) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal NORMAL move
-					if(board[x2][y2]==0){ //the place we want to move is empty
-						board[x2][y2] = whoseTurn;
-						board[x1][y1] = 0;
-						return true;
-					}
+		if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
+			if( ((y2==y1+((whoseTurn==1)?1:-1)) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){
+				if(board[x2][y2]==0){
+					return true;
 				}
-				
-					
-				if(validJump(x1,y1,x2,y2)){
-						
-				}
-					
-				
-			}
-			
-			if(board[x1][y1] == whoseTurn+2){ //we have a king piece
-				if( ((y2==y1+1 || y2==y1-1) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal move
-					if(board[x2][y2]==0){ //the place we want to move is empty
-						board[x2][y2] = whoseTurn+2;
-						board[x1][y1] = 0;
-						return true;
-					}
-				}
-			}
-			
-			
-		}else{
-			return false; //we don't have a piece at (x1,y1)
+			}	
 		}
-		
-		
+		if(board[x1][y1] == whoseTurn+2){ //we have a king piece
+			if( ((y2==y1+1 || y2==y1-1) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal move
+				if(board[x2][y2]==0){
+					return true;
+				}
+			}
+		}
 		return false;
 	}
+
+	private boolean doMove(int x1, int y1, ArrayList<Integer> coordList) {
+
+		
+		return false
+	}
+
+	
 
 	private boolean validJump(int x1, int y1, int x2, int y2) {
 		
 		if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
 			if( ((y2==y1+((whoseTurn==1)?2:-2)) && (x2==x1+2 || x2==x1-2)) && inBounds(x2,y2)){
-				return true;
+				if(board[Integer.valueOf((x2+x1)/2)][Integer.valueOf((y2+y1)/2)]==1){
+					
+					
+				}
 			}	
 		}
 		if(board[x1][y1] == whoseTurn+2){ //we have a king piece
 			if( ((y2==y1+2 || y2==y1-2) && (x2==x1+2 || x2==x1-2)) && inBounds(x2,y2)){
-				//if(Math.abs(a))
+				
 				return true;
 			}
 		}
@@ -168,16 +171,7 @@ public class Checkers implements GenGame {
 	
 	private boolean validMove(int x1, int y1, int x2, int y2) {
 		
-		if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
-			if( ((y2==y1+((whoseTurn==1)?1:-1)) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){
-				return true;
-			}	
-		}
-		if(board[x1][y1] == whoseTurn+2){ //we have a king piece
-			if( ((y2==y1+1 || y2==y1-1) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal move
-				return true;
-			}
-		}
+		
 		
 		return false;
 	}

@@ -1,5 +1,6 @@
 package server;
 
+import game.Checkers;
 import game.TicTacToe;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class ServerBootstrap {
 
 	private static int port = 8000;
 	private static int concurrentConnectionsAllowed = 4;
-	private static Class gameClass = TicTacToe.class;
+	private static Class gameClass = Checkers.class;
 
 	public static void main(String[] args) {
 
