@@ -10,14 +10,14 @@ import server.Scoreboard;
 public class Checkers implements GenGame {
 
 	private int board[][] = {
-			{ 0, 2, 0, 2, 0, 2, 0, 2 },
-			{ 2, 0, 2, 0, 2, 0, 2, 0 }, 
-			{ 0, 2, 0, 2, 0, 2, 0, 2 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0 }, 
-			{ 0, 0, 0, 0, 0, 0, 0, 0 }, 
 			{ 1, 0, 1, 0, 1, 0, 1, 0 }, 
 			{ 0, 1, 0, 1, 0, 1, 0, 1 }, 
-			{ 1, 0, 1, 0, 1, 0, 1, 0 }
+			{ 1, 0, 1, 0, 1, 0, 1, 0 },
+			{ 0, 0, 0, 0, 0, 0, 0, 0 }, 
+			{ 0, 0, 0, 0, 0, 0, 0, 0 }, 
+			{ 0, 2, 0, 2, 0, 2, 0, 2 },
+			{ 2, 0, 2, 0, 2, 0, 2, 0 },
+			{ 0, 2, 0, 2, 0, 2, 0, 2 }
 			};
 	private int whoseTurn = 0;
 	private boolean gameRunning = false;
@@ -111,19 +111,32 @@ public class Checkers implements GenGame {
 	private boolean doMove(int x1, int y1, int x2, int y2) {
 		
 		
-		if(board[x1][y1] == whoseTurn || board[x1][y1] == whoseTurn + 2){
+		if(board[x1][y1] == whoseTurn || board[x1][y1] == whoseTurn + 2){ //its our piece
 			
-			if(board[x1][y1] == whoseTurn){ //we have a normal piece
-				if(((y2==y1+1) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal move
-					
+			if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
+				if( ((y2==y1+((whoseTurn==1)?1:-1)) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal NORMAL move
 					if(board[x2][y2]==0){ //the place we want to move is empty
-						
 						board[x2][y2] = whoseTurn;
 						board[x1][y1] = 0;
 						return true;
-						
 					}
+				}
+				
 					
+				if(validJump(x1,y1,x2,y2)){
+						
+				}
+					
+				
+			}
+			
+			if(board[x1][y1] == whoseTurn+2){ //we have a king piece
+				if( ((y2==y1+1 || y2==y1-1) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal move
+					if(board[x2][y2]==0){ //the place we want to move is empty
+						board[x2][y2] = whoseTurn+2;
+						board[x1][y1] = 0;
+						return true;
+					}
 				}
 			}
 			
@@ -132,6 +145,39 @@ public class Checkers implements GenGame {
 			return false; //we don't have a piece at (x1,y1)
 		}
 		
+		
+		return false;
+	}
+
+	private boolean validJump(int x1, int y1, int x2, int y2) {
+		
+		if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
+			if( ((y2==y1+((whoseTurn==1)?2:-2)) && (x2==x1+2 || x2==x1-2)) && inBounds(x2,y2)){
+				return true;
+			}	
+		}
+		if(board[x1][y1] == whoseTurn+2){ //we have a king piece
+			if( ((y2==y1+2 || y2==y1-2) && (x2==x1+2 || x2==x1-2)) && inBounds(x2,y2)){
+				//if(Math.abs(a))
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	private boolean validMove(int x1, int y1, int x2, int y2) {
+		
+		if(board[x1][y1] == whoseTurn){ //we have a normal piece (non-king)
+			if( ((y2==y1+((whoseTurn==1)?1:-1)) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){
+				return true;
+			}	
+		}
+		if(board[x1][y1] == whoseTurn+2){ //we have a king piece
+			if( ((y2==y1+1 || y2==y1-1) && (x2==x1+1 || x2==x1-1)) && inBounds(x2,y2)){ //we have a legal move
+				return true;
+			}
+		}
 		
 		return false;
 	}
