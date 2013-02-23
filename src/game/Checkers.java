@@ -142,11 +142,11 @@ public class Checkers implements GenGame {
 		System.out.println("Checking for valid move");
 		
 		
-		boolean areJumps = (coordList.size()==2) ? false: true;
+		//boolean areJumps = (coordList.size()==2) ? false: true;
 		
 	
 			
-		if (!areJumps) {
+		
 			int x2 = coordList.get(0);
 			int y2 = coordList.get(1);
 
@@ -156,20 +156,9 @@ public class Checkers implements GenGame {
 						return true;
 					}
 				}
-
-			}
-
-			if (board[x1][y1] == whoseTurn + 2) { // we have a king piece
-				if (((y2 == y1 + 1 || y2 == y1 - 1) && (x2 == x1 + 1 || x2 == x1 - 1)) && inBounds(x2, y2)) { // we have a legal move
-					if (board[x2][y2] == -1) {
-						return true;
-					}
-				}
-			}
-			
-		}else{
-			
-			if (board[x1][y1] == whoseTurn || board[x1][y1] == whoseTurn + 2){ //we have one of our pieces
+				
+				//------------- JUMP CODE
+				
 				if(Math.abs(x1-coordList.get(0))==2 && Math.abs(y1-coordList.get(1))==2){ //we are trying to jump
 					int jumpPiece = board[(x1+coordList.get(0))/2][(y1+coordList.get(1))/2];
 					if(jumpPiece!=-1 && jumpPiece!=whoseTurn && jumpPiece!=whoseTurn+2){
@@ -186,8 +175,43 @@ public class Checkers implements GenGame {
 						return true;
 					}
 				}
+				
+				
+				
+
 			}
-		}
+
+			if (board[x1][y1] == whoseTurn + 2) { // we have a king piece
+				if (((y2 == y1 + 1 || y2 == y1 - 1) && (x2 == x1 + 1 || x2 == x1 - 1)) && inBounds(x2, y2)) { // we have a legal move
+					if (board[x2][y2] == -1) {
+						return true;
+					}
+				}
+				
+				
+				//-------------------------- JUMP CODE
+				
+				if(Math.abs(x1-coordList.get(0))==2 && Math.abs(y1-coordList.get(1))==2){ //we are trying to jump
+					int jumpPiece = board[(x1+coordList.get(0))/2][(y1+coordList.get(1))/2];
+					if(jumpPiece!=-1 && jumpPiece!=whoseTurn && jumpPiece!=whoseTurn+2){
+						
+						for(int i=2;i<coordList.size();i+=2){ //handles the rest of the jumps
+							jumpPiece = board[(coordList.get(i-2)+coordList.get(i))/2][(coordList.get(i-1)+coordList.get(i+1))/2];
+							if(jumpPiece==-1 || jumpPiece==whoseTurn || jumpPiece==whoseTurn+2){
+								return false;
+							}
+							//need to add code to make sure that each subsequent jump is within a 2 piece range
+							
+						}
+						
+						return true;
+					}
+				}
+				
+				
+			}
+			
+		
 		
 	return false;
 	}
