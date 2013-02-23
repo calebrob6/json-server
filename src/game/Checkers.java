@@ -151,18 +151,23 @@ public class Checkers implements GenGame {
 			int y2 = coordList.get(1);
 
 			if (board[x1][y1] == whoseTurn) { // we have a normal piece
-				if (((y2 == y1 + ((whoseTurn == 1) ? 1 : -1)) && (x2 == x1 + 1 || x2 == x1 - 1)) && inBounds(x2, y2)) {
-					if (board[x2][y2] == 0) {
+				{
+				System.out.println("level1");
+				if (((x2 == x1 + ((whoseTurn == 0) ? 1 : -1)) && (y2 == y1 + 1 || y2 == y1 - 1)) && inBounds(x2, y2)) {
+					System.out.println("level2");
+					if (board[x2][y2] == -1) {
+						System.out.println("level3");
 						return true;
 					}
+				}
 				}
 
 			}
 
 			if (board[x1][y1] == whoseTurn + 2) { // we have a king piece
-				if (((y2 == y1 + 1 || y2 == y1 - 1) && (x2 == x1 + 1 || x2 == x1 - 1))
+				if (((x2 == y1 + 1 || x2 == x1 - 1) && (y2 == y1 + 1 || y2 == y1 - 1))
 						&& inBounds(x2, y2)) { // we have a legal move
-					if (board[x2][y2] == 0) {
+					if (board[x2][y2] == -1) {
 						return true;
 					}
 				}

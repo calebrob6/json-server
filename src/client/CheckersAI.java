@@ -179,7 +179,7 @@ public class CheckersAI {
 	{
 		ArrayList<int[]> result = new ArrayList<int[]>();
 		int id = board[x][y] % 2;
-		int dir = (id*2)-1;
+		int dir = -((id*2)-1);
 		final int MY_PIECE = id;
 		int opPiece;
 		if(id == 0)
@@ -194,8 +194,11 @@ public class CheckersAI {
 		final int MY_KING = MY_PIECE + 2;
 		final int OP_KING = OP_PIECE + 2;
 		final int OPEN = -1;
-		
-		if((x+dir) > -1 && (x+dir) < 8 && y-1 > -1 && board[x+dir][y-1] == -1)
+		try{
+		System.out.println(board[x][y] + " " + x + " " + y + " " + board[x+dir][y-1] + " " + board[x+dir][y+1]);}
+		catch(Exception e)
+		{}
+		if(((x+dir) > -1) && ((x+dir) < 8) && (y-1 > -1) && (board[x+dir][y-1] == -1))
 		{
 			result.add(new int[]{x, y});
 			result.add(new int[]{x+dir, y-1});
@@ -221,7 +224,7 @@ public class CheckersAI {
 			result.add(new int[]{x, y});
 			result.add(new int[]{x+dir+dir, y-2});
 		}
-		if((x+dir) > 0 && (x+dir) < 7 && y+1 < 7 && (board[x+dir][y+1] == OP_PIECE || board[x+dir][y+1] == OP_KING) && board[x+dir+dir][y-2] == -1)
+		if((x+dir) > 0 && (x+dir) < 7 && y+1 < 7 && (board[x+dir][y+1] == OP_PIECE || board[x+dir][y+1] == OP_KING) && board[x+dir+dir][y+2] == -1)
 		{
 			result.add(new int[]{x, y});
 			result.add(new int[]{x+dir+dir, y+2});
@@ -231,7 +234,7 @@ public class CheckersAI {
 			result.add(new int[]{x, y});
 			result.add(new int[]{x-dir-dir, y-2});
 		}
-		if((x-dir) > 0 && (x-dir) < 7 && y+1 < 7 && (board[x-dir][y+1] == OP_PIECE || board[x-dir][y+1] == OP_KING) && board[x][y]/2==1 && board[x-dir-dir][y-2] == -1)
+		if((x-dir) > 0 && (x-dir) < 7 && y+1 < 7 && (board[x-dir][y+1] == OP_PIECE || board[x-dir][y+1] == OP_KING) && board[x][y]/2==1 && board[x-dir-dir][y+2] == -1)
 		{
 			result.add(new int[]{x, y});
 			result.add(new int[]{x-dir-dir, y+2});
