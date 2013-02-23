@@ -109,6 +109,11 @@ public class ConnectionHandler implements HttpHandler {
 		//this section sends back the return data
 		try {
 			response = buf.toString();
+			
+			if(Debugger.DEBUG){
+				System.out.println("Response: " + response);
+			}
+			
 			t.sendResponseHeaders(httpResponseCode, response.length());
 			os = t.getResponseBody();
 			os.write(response.getBytes());

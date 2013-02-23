@@ -58,11 +58,10 @@ public class Checkers implements GenGame {
 
 	@Override
 	public JSONObject doCommand(JSONObject input) throws JSONException {
-		
+
 		int x1 = 0;
 		int y1 = 0;
-		
-		
+
 		int id = -1;
 		int error = -1;
 		boolean won = false;
@@ -80,39 +79,37 @@ public class Checkers implements GenGame {
 		commandName = (String) command.getString(0);
 
 		if (commandName.equalsIgnoreCase("move")) {
-			
-			if (whoseTurn-1 == id) {
-				
+
+			if (whoseTurn == id) {
+
 				x1 = command.getInt(1);
 				y1 = command.getInt(2);
 
 				ArrayList<Integer> coordList = new ArrayList<Integer>();
-				
-				for(int i=3;i<command.length()-3;i++){
-					coordList.add(command.getInt(i)); //this should be atleast 2
-					coordList.get(i);
+
+				for (int i = 3; i < command.length(); i++) {
+					coordList.add(command.getInt(i));
 				}
-				
-				
-				if(validMove(x1,y1,coordList)){
-					doMove(x1,y1,coordList);
+
+				if (validMove(x1, y1, coordList)) {
+					doMove(x1, y1, coordList);
 					System.out.println("Move successful");
 					error = 0;
 					if (checkWin(id)) {
-						System.out.println("Player " + id + " won"); 
-						Scoreboard.incrementScore(Integer.toString(input.getInt("GAMEID")));
+						System.out.println("Player " + id + " won");
 						won = true;
 						whoWon = id;
 						gameRunning = false;
 					}
-					
-				}else{
+
+				} else {
 					error = 2;
 				}
-				
+
+			} else {
+				error = 1;
 			}
-				
-			
+
 		}
 
 		JSONObject rWhat = new JSONObject();
@@ -124,8 +121,7 @@ public class Checkers implements GenGame {
 			System.err.println("Error creating return object");
 		}
 		return rWhat;
-		
-		
+
 	}
 
 	private boolean checkWin(int id) {
@@ -181,6 +177,7 @@ public class Checkers implements GenGame {
 
 	private void doMove(int x1, int y1, ArrayList<Integer> coordList) {
 
+		try{
 		boolean areJumps = (coordList.size()==2) ? false: true;
 		
 		if (!areJumps) {
@@ -209,8 +206,10 @@ public class Checkers implements GenGame {
 			if (whoseTurn == 0)
 				whoseTurn = 1;
 		}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 		
-		return;
 	}
 
 	
