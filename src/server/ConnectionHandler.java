@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
+import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 
@@ -113,6 +114,9 @@ public class ConnectionHandler implements HttpHandler {
 			if(Debugger.DEBUG){
 				System.out.println("Response: " + response);
 			}
+			
+			Headers h = t.getResponseHeaders();
+		    h.add("Content-Type", "application/json");
 			
 			t.sendResponseHeaders(httpResponseCode, response.length());
 			os = t.getResponseBody();
