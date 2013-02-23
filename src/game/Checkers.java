@@ -222,9 +222,8 @@ public class Checkers implements GenGame {
 
 	private void doMove(int x1, int y1, ArrayList<Integer> coordList) {
 
-		try{
-		boolean areJumps = (coordList.size()==2) ? false: true;
 		
+		boolean areJumps = (Math.abs(coordList.get(0)-x1)==1) ? false : true;
 		if (!areJumps) {
 			
 			board[coordList.get(0)][coordList.get(1)] = board[x1][y1];
@@ -251,9 +250,7 @@ public class Checkers implements GenGame {
 			if (whoseTurn == 0)
 				whoseTurn = 1;
 		}
-		}catch(Exception e){
-			e.printStackTrace();
-		}
+		
 		
 	}
 
