@@ -21,7 +21,7 @@ public class ServerBootstrap {
 
 	private static int port = 8000;
 	private static int concurrentConnectionsAllowed = 4;
-	private static Class gameClass = Checkers.class;
+	private static Class gameClass = TicTacToe.class;
 
 	public static void main(String[] args) {
 
