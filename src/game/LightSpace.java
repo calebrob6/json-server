@@ -18,7 +18,6 @@ public class LightSpace implements GenGame{
 		Map map = new Map();
 		map.initMap();
 		
-		
 	}
 
 	@Override
@@ -65,7 +64,7 @@ public class LightSpace implements GenGame{
 	@Override
 	public boolean doInit(int gId) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 }
