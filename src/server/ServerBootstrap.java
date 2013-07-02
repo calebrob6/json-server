@@ -1,7 +1,6 @@
 package server;
 
-import game.Checkers;
-import game.TicTacToe;
+import game.LightSpace;
 
 import java.io.IOException;
 import java.net.BindException;
@@ -19,9 +18,10 @@ import com.sun.net.httpserver.HttpServer;
  */
 public class ServerBootstrap {
 
+	public static final int TIMEOUT_LENGTH = 60000; //Timeout used when people are trying to connect to a game, in milliseconds
 	private static int port = 8000;
 	private static int concurrentConnectionsAllowed = 4;
-	private static Class gameClass = TicTacToe.class;
+	private static Class gameClass = LightSpace.class;
 
 	public static void main(String[] args) {
 
@@ -29,7 +29,7 @@ public class ServerBootstrap {
 		ConnectionHandler cHandle = new ConnectionHandler(game);
 
 		try {
-			// The second arguement to HttpServer.create is the number of allowed backlogged connections
+			// The second argument to HttpServer.create is the number of allowed backlogged connections
 			HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 			server.createContext("/", cHandle);
 			server.setExecutor(Executors.newFixedThreadPool(concurrentConnectionsAllowed));

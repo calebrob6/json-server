@@ -7,6 +7,6 @@ public interface GenGame {
 
 	public JSONObject getStatus();
 	public JSONObject doCommand(JSONObject input) throws JSONException;
+	public boolean doInit(int gId);
 
-	
 }

@@ -164,4 +164,9 @@ public class TicTacToe implements GenGame {
 		return (board[x][y] == -1);
 	}
 
+	@Override
+	public boolean doInit(int gId) {
+		return true;
+	}
+
 }

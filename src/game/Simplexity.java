@@ -262,5 +262,10 @@ public class Simplexity implements GenGame {
 	private boolean isLegal(int x, int y){
 		return (x>=0 && x<WIDTH) && (y>=0 && y<HEIGHT);
 	}
+	
+	@Override
+	public boolean doInit(int gId) {
+		return true;
+	}
 
 }
