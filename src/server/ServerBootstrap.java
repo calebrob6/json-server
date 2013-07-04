@@ -1,12 +1,15 @@
 package server;
 
-import game.LightSpace;
 
+import game.LightSpace;
+import game.GenGame;
+import game.TicTacToe;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
+import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 
 /**
@@ -18,10 +21,13 @@ import com.sun.net.httpserver.HttpServer;
  */
 public class ServerBootstrap {
 
+
 	public static final int TIMEOUT_LENGTH = 60000; //Timeout used when people are trying to connect to a game, in milliseconds
-	private static int port = 8000;
-	private static int concurrentConnectionsAllowed = 4;
-	private static Class gameClass = LightSpace.class;
+	private static final int port = 8000;
+	private static final int concurrentConnectionsAllowed = 4;
+	private static final Class<?> gameClass = TicTacToe.class;
+	private static final String basePath = "/";
+
 
 	public static void main(String[] args) {
 
@@ -29,9 +35,11 @@ public class ServerBootstrap {
 		ConnectionHandler cHandle = new ConnectionHandler(game);
 
 		try {
-			// The second argument to HttpServer.create is the number of allowed backlogged connections
+			// The second argument to HttpServer.create is the number of allowed back-logged connections
+			System.out.println("Server starting on port: "+port+" listenning on path: "+basePath+ " with the game class: " + gameClass.getName());
 			HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
-			server.createContext("/", cHandle);
+			HttpContext context = server.createContext("/", cHandle);
+			context.getFilters().add(new ParameterFilter());
 			server.setExecutor(Executors.newFixedThreadPool(concurrentConnectionsAllowed));
 			server.start();
 		} catch (BindException e) {
