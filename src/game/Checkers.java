@@ -151,6 +151,7 @@ public class Checkers implements GenGame {
 			int y2 = coordList.get(1);
 
 			if (board[x1][y1] == whoseTurn) { // we have a normal piece
+
 				if (((x2 == x1 + ((whoseTurn == 0) ? 1 : -1)) && (y2 == y1 + 1 || y2 == y1 - 1)) && inBounds(x2, y2)) {
 					if (board[x2][y2] == -1) {
 						return true;
@@ -179,10 +180,13 @@ public class Checkers implements GenGame {
 				
 				
 
+
 			}
 
 			if (board[x1][y1] == whoseTurn + 2) { // we have a king piece
+
 				if (((y2 == y1 + 1 || y2 == y1 - 1) && (x2 == x1 + 1 || x2 == x1 - 1)) && inBounds(x2, y2)) { // we have a legal move
+
 					if (board[x2][y2] == -1) {
 						return true;
 					}
