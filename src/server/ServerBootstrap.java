@@ -1,9 +1,8 @@
 package server;
 
 
-import game.LightSpace;
-import game.GenGame;
-import game.TicTacToe;
+import game.AlienInvasion;
+
 import java.io.IOException;
 import java.net.BindException;
 import java.net.InetSocketAddress;
@@ -25,7 +24,7 @@ public class ServerBootstrap {
 	public static final int TIMEOUT_LENGTH = 60000; //Timeout used when people are trying to connect to a game, in milliseconds
 	private static final int port = 8000;
 	private static final int concurrentConnectionsAllowed = 4;
-	private static final Class<?> gameClass = TicTacToe.class;
+	private static final Class<?> gameClass = AlienInvasion.class;
 	private static final String basePath = "/";
 
 

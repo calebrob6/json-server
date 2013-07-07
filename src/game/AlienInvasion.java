@@ -27,7 +27,8 @@ public class AlienInvasion implements GenGame {
 		winner = -1;
 	}
 
-	public boolean doConnect() {
+	@Override
+	public boolean doInit(int gId) {
 		if (playerCount >= maxPlayers)
 			return false;
 		else {
@@ -51,7 +52,7 @@ public class AlienInvasion implements GenGame {
 			{
 				if(p.getOwnerId() != i || p.getOwnerId() != -1) win = false;
 			}
-			for(PendingAttack pa : (PendingAttack[])attackQueue.toArray())
+			for(PendingAttack pa : attackQueue.toArray(new PendingAttack[0]))
 			{
 				if(pa.getAttackerId() != i) win = false;
 			}
@@ -64,22 +65,22 @@ public class AlienInvasion implements GenGame {
 
 	@Override
 	public JSONObject getStatus() {
-		update();
-		JSONObject response = new JSONObject();
-		try {
-			for (Planet planet : board)
-				response.append("MAP", planet.toJSON());
-			for (PendingAttack attack : attackQueue
-					.toArray(new PendingAttack[] {}))
-				response.append("ATTACKS", attack.toJSON());
-			response.put("TICK", tick);
-			response.put("RUNNING", isRunning);
-			response.put("WHOWON", winner);
-		} catch (JSONException e) {
-			// something really bad happened
-		}
+			update();
+			JSONObject response = new JSONObject();
+			try {
+				for (Planet planet : board)
+					response.append("MAP", planet.toJSON());
+				for (PendingAttack attack : attackQueue
+						.toArray(new PendingAttack[] {}))
+					response.append("ATTACKS", attack.toJSON());
+				response.put("TICK", tick);
+				response.put("RUNNING", isRunning);
+				response.put("WHOWON", winner);
+			} catch (JSONException e) {
+				// something really bad happened
+			}
 
-		return response;
+			return response;
 	}
 
 	@Override
@@ -100,8 +101,8 @@ public class AlienInvasion implements GenGame {
 			return response;
 		}
 		if (isValid(fromPlanetNumber, player)) {
-			Planet.startAttack(board[fromPlanetNumber], board[toPlanetNumber],
-					tick);
+			attackQueue.add(Planet.startAttack(board[fromPlanetNumber], board[toPlanetNumber],
+					tick));
 		} else {
 			errorCode = 2; // Invalid Move
 			response.put("ERROR", errorCode);
