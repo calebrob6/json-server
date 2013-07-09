@@ -67,14 +67,47 @@ public class Game {
 
 	public JSONObject connectPlayer(int gId) {
 		int me = addPlayer(gId);
-		while(pCount.get()!=GameManager.MAX_PLAYERS){
+		boolean successCode = gameHook.doInit(gId);
+		String errorMessage = "";
+		
+		int totalTimeSlept = 0;
+		
+		while(pCount.get()!=GameManager.MAX_PLAYERS && totalTimeSlept < ServerBootstrap.TIMEOUT_LENGTH){
 			try {
 				Thread.sleep(100);
+				totalTimeSlept += 100;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		return players[me].toJSON();
+		
+		//Pretty readable...
+		//check for the various things that can go wrong above and deal with them
+		//TODO Make these integer error codes that correspond with the API
+		if(me != -1){
+			if(successCode){
+				if(totalTimeSlept < ServerBootstrap.TIMEOUT_LENGTH){
+					
+				}else{
+					errorMessage = "gameConnectionTimeout";
+				}
+			}else{
+				errorMessage = "gameInitError";
+			}
+		}else{
+			errorMessage = "addPlayerError";
+		}
+		
+		if(errorMessage.equals("")){
+			return players[me].toJSON();
+		}else{
+			try{
+				return new JSONObject("{\"error\":\""+errorMessage+"\"}");
+			}catch(JSONException e){
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	public JSONObject getStatus(JSONObject a) throws JSONException {

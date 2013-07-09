@@ -260,4 +260,8 @@ public class Checkers implements GenGame {
 		return (x>=0 && x<8) && (y>=0 && y<8);
 	}
 
+	@Override
+	public boolean doInit(int gId) {
+		return true;
+	}
 }

@@ -1,0 +1,37 @@
+Protocol
+
+URL PATH:	/connect
+Arguments:	<none>
+Returns:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>}
+
+This command is what the client must call in order to join a game. This command will block until a game is found (2 players are ready) or the connection times out
+(however long that is). The server will then return a JSON data structure with the client's id, authentication number, and game id. These values will need to be passed
+to all subsequent API calls so that the server can recognize who is who.
+
+URL PATH:	/game/status
+Arguments:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>}
+Returns:	{"TURN":<id of whose turn it is>,"BOARD":<Array[WIDTH][LENGTH] of the game state>,"RUNNING":<boolean that says whether the game is running>}
+
+This command takes the standard user id, auth, and game id integers as input and returns a JSON object that contains the ID of whose turn it is as well as a 2-dimensional
+array of the board state.
+
+URL PATH:	/game/move
+Arguments:	{"ID":<your id>,"AUTH":<your authentication integer>,"GAMEID":<your gameID>,
+---------:	"COMMAND":["MOVE",xCoordofPiece,yCoordofPiece,xCoordofMove,yCoordofMove]}
+Returns:	{"WON":<boolean>,"ERROR":<#>}
+
+The move command again takes the client's user id, auth, and game id along with a "COMMAND" parameter which is an array where the first value is a string containing the
+command name and the subsequent indexes containing arguments to pass to that command.
+
+Currently the only COMMAND needed for checkers is the MOVE command which takes the (x,y) coordinate of the piece you want to move and the (x,y) coordinate of
+where you want to move to.
+
+The return values are: WON which is a boolean value saying if your move resulted in you winning and ERROR which is an integer that means one of the following:
+
+ERROR Values and Meaning:
+-1	Unspecified error
+0	All is good
+1	It isn't your turn to move
+2	You can't move there
+3	Malformed JSON input
+4	Your userID and auth aren't right
