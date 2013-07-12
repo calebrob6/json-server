@@ -16,17 +16,51 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AlienInvasionClient {
-	private final String connect = "http://localhost:8000/connect";
-	private final String attack = "http://localhost:8000/game/move";
-	private final String status = "http://localhost:8000/game/status";
+	private static final String connect = "http://localhost:8000/connect";
+	private static final String attack = "http://localhost:8000/game/move";
+	private static final String status = "http://localhost:8000/game/status";
 	private int playerId, playerAuth, gameId;
 	
 	
 	
-	public AlienInvasionClient connect()
+	public static AlienInvasionClient connect()
 	{
 		AlienInvasionClient temp = new AlienInvasionClient();
-		JSONObject obj = new JSONObject();
+		JSONObject req = new JSONObject();
+		String response = "";
+		JSONObject resp = null;
+		String data;
+		try {
+			data = URLEncoder.encode(req.toString(), "UTF-8");
+			// Send data
+			URL url = new URL(connect);
+			URLConnection conn = url.openConnection();
+			conn.setDoOutput(true);
+			OutputStreamWriter wr = new OutputStreamWriter(
+					conn.getOutputStream());
+			wr.write(data);
+			wr.flush();
+
+			// Get the response
+			BufferedReader rd = new BufferedReader(new InputStreamReader(
+					conn.getInputStream()));
+			String line;
+			while ((line = rd.readLine()) != null) {
+				response += line;
+				// System.out.println(line);
+			}
+			wr.close();
+			rd.close();
+			resp = new JSONObject(response);
+			temp.gameId = resp.getInt("GAMEID");
+			temp.playerAuth = resp.getInt("AUTH");
+			temp.playerId = resp.getInt("ID");
+			
+
+		} catch (Exception e) { // PRO error handling!
+			//oops
+		} 
+		
 		return temp;
 	}
 	
