@@ -107,7 +107,7 @@ public class AlienInvasionClient {
 		} 
 		
 
-		return AlienGameState.parse(resp);
+		return AlienGameState.parse(resp, playerId);
 	}
 	
 	public AlienGameState getStatus()
@@ -150,8 +150,7 @@ public class AlienInvasionClient {
 
 		} 
 		
-
-		return AlienGameState.parse(resp);
+		return AlienGameState.parse(resp, playerId);
 	}
 	
 
