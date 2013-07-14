@@ -16,7 +16,7 @@ public class AlienGameState {
 	private ArrayList<Planet> neutralPlanets;
 	private ArrayList<PendingAttack> myAttacks;
 	private ArrayList<PendingAttack> theirAttacks;
-	private int whoWon;
+	private String whoWon;
 	private int currentTick;
 	
 	public ArrayList<Planet> getMyPlanets() {
@@ -59,11 +59,11 @@ public class AlienGameState {
 		this.theirAttacks = theirAttacks;
 	}
 
-	public int getWhoWon() {
+	public String getWhoWon() {
 		return whoWon;
 	}
 
-	public void setWhoWon(int whoWon) {
+	public void setWhoWon(String whoWon) {
 		this.whoWon = whoWon;
 	}
 
@@ -81,7 +81,7 @@ public class AlienGameState {
 		setMyPlanets(new ArrayList<Planet>());
 		setTheirPlanets(new ArrayList<Planet>());
 		setNeutralPlanets(new ArrayList<Planet>());
-		setWhoWon(-1);
+		setWhoWon("");
 		setCurrentTick(0);
 	}
 
@@ -96,14 +96,20 @@ public class AlienGameState {
 			
 			JSONArray planets = resp.getJSONArray("MAP");
 			Planet[] planetArray = new Planet[planets.length()];
+			int myTroops, allTroops, myPlanets, allPlanets;
+			myTroops = allTroops = myPlanets = allPlanets = 0;
 			for(int i = 0; i < planets.length(); i++)
 			{
 				JSONObject jsonPlanet = planets.getJSONObject(i);
 				Planet planet = Planet.fromJSON(jsonPlanet);
 				planetArray[i] = planet;
+				allPlanets++;
+				allTroops += planet.getTroopCount();
 				if (planet.getOwnerId() == playerId)
 				{
 					state.myPlanets.add(planet);
+					myPlanets++;
+					myTroops += planet.getTroopCount();
 				}
 				else if(planet.getOwnerId() == -1)
 				{
@@ -114,8 +120,10 @@ public class AlienGameState {
 					state.theirPlanets.add(planet);
 				}
 			}
-			
-			JSONArray attacks = resp.getJSONArray("ATTACKS");
+			System.out.print(resp.getInt("TICK") + "\t" + myPlanets + "/" + allPlanets + "\t" + myTroops + "/" + allTroops + "\t");
+			JSONArray attacks = new JSONArray();
+			if(resp.has("ATTACKS"))						//if there are no attacks, no element 
+				attacks = resp.getJSONArray("ATTACKS");	//will be present. this is normal
 			for(int i = 0; i < attacks.length(); i++)
 			{
 				JSONObject jsonAttack = attacks.getJSONObject(i);
@@ -123,12 +131,21 @@ public class AlienGameState {
 				if (attack.getAttackerId() == playerId)
 				{
 					state.myAttacks.add(attack);
+					
 				}
 				else //planet.getOwnerId() == the other player
 				{
 					state.theirAttacks.add(attack);
 				}
 			}
+			System.out.println(state.myAttacks.size() + "/" + (state.myAttacks.size() + state.theirAttacks.size()));
+			state.currentTick = resp.getInt("TICK");
+			if(resp.getInt("WHOWON") == playerId)
+				state.whoWon = "YOU";
+			else if(resp.getInt("WHOWON") == -1)
+				state.whoWon = "";
+			else
+				state.whoWon = "THEY";
 			
 			return state;
 		} catch (Exception e) {

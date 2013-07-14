@@ -45,6 +45,19 @@ public class TestAlien {
 
 		long endTime = System.currentTimeMillis();
 		System.out.println(endTime - startTime);
+		
+		planets = Planet.getMap();
+		for(Planet from : planets)
+		{
+			for(Planet to : planets)
+			{
+				if(to.getId() != from.getId())
+				{
+					PendingAttack attack = Planet.startAttack(from, to, 0);
+					System.out.println("Attacking from " + from.getId() + " to " + to.getId() + " takes " + attack.getArrivalTick() + " ticks.");
+				}
+			}
+		}
 	}
 
 }
