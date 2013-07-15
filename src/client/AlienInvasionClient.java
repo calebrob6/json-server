@@ -16,15 +16,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class AlienInvasionClient {
-	private static final String connect = "http://localhost:8000/connect";
-	private static final String attack = "http://localhost:8000/game/move";
-	private static final String status = "http://localhost:8000/game/status";
+	
+	private static String hostname = "localhost";
+	private static int port = 8000;
+	private static final String connect = "/connect";
+	private static final String attack = "/game/move";
+	private static final String status = "/game/status";
 	private int playerId, playerAuth, gameId;
 	
 	
 	
-	public static AlienInvasionClient connect()
+	public static AlienInvasionClient connect(String host, int port)
 	{
+		AlienInvasionClient.hostname = host;
+		AlienInvasionClient.port = port;
 		AlienInvasionClient temp = new AlienInvasionClient();
 		JSONObject req = new JSONObject();
 		String response = "";
@@ -33,7 +38,7 @@ public class AlienInvasionClient {
 		try {
 			data = URLEncoder.encode(req.toString(), "UTF-8");
 			// Send data
-			URL url = new URL(connect);
+			URL url = new URL("http://"+hostname+":"+port+connect);
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(
@@ -82,7 +87,7 @@ public class AlienInvasionClient {
 		try {
 			data = URLEncoder.encode(req.toString(), "UTF-8");
 			// Send data
-			URL url = new URL(attack);
+			URL url = new URL("http://"+hostname+":"+port+attack);
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(
@@ -126,7 +131,7 @@ public class AlienInvasionClient {
 		try {
 			data = URLEncoder.encode(req.toString(), "UTF-8");
 			// Send data
-			URL url = new URL(status);
+			URL url = new URL("http://"+hostname+":"+port+status);
 			URLConnection conn = url.openConnection();
 			conn.setDoOutput(true);
 			OutputStreamWriter wr = new OutputStreamWriter(
