@@ -9,7 +9,7 @@ public class AlienAI {
 
 	
 	public static void main(String[] args) {
-		AlienInvasionClient client = AlienInvasionClient.connect();
+		AlienInvasionClient client = AlienInvasionClient.connect("localhost",8000);
 		AlienGameState state = client.getStatus();
 		
 		while(state.getWhoWon().equals(""))
