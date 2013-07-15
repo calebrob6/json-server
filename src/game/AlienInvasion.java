@@ -50,8 +50,10 @@ public class AlienInvasion implements GenGame {
 			boolean win = true;
 			for(Planet p : board)
 			{
-				if(p.getOwnerId() != i || p.getOwnerId() != -1) win = false;
+				if(!(p.getOwnerId() == i || p.getOwnerId() == -1)) win = false;
 			}
+			if(win)
+				System.out.println("Someone's in trouble");
 			for(PendingAttack pa : attackQueue.toArray(new PendingAttack[0]))
 			{
 				if(pa.getAttackerId() != i) win = false;
@@ -59,6 +61,7 @@ public class AlienInvasion implements GenGame {
 			if(win)
 			{
 				winner = i;
+				isRunning = false;
 			}
 		}
 	}
@@ -122,6 +125,8 @@ public class AlienInvasion implements GenGame {
 	}
 
 	private void update() {
+		if(!isRunning) return;
+		
 		int currentTick = getTick();
 		for (int i = tick + 1; i <= currentTick; i++) {
 			for (Planet planet : board) {

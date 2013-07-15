@@ -45,7 +45,7 @@ public class PendingAttack implements Comparable<PendingAttack>{
 			json.put("ATTACKERID", attackerId);
 			json.put("POWER", attackPower);
 			json.put("TROOPS", attackTroops);
-			json.put("TARGET", targetPlanet.toJSON());
+			json.put("TARGETID", targetPlanet.getId());
 			json.put("TICK", arrivalTick);
 		} catch (JSONException e) {
 			// this should never happen
@@ -60,7 +60,7 @@ public class PendingAttack implements Comparable<PendingAttack>{
 	{
 		PendingAttack attack = null;
 		try{
-			int planetNum = json.getJSONObject("TARGET").getInt("PLANETID");
+			int planetNum = json.getInt("TARGETID");
 			Planet target = board[planetNum];
 			attack = new PendingAttack(json.getInt("TICK"), target, json.getInt("ATTACKERID"), 
 					json.getInt("POWER"), json.getInt("TROOPS"));
