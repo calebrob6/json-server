@@ -7,7 +7,7 @@
 var RESPONSE = {};
 
 function print(str) {
-    $('divMsg').append("<p>" + str + "</p>");
+    $('#divMsg').append("<p>" + str + "</p>");
 }
 
 function doRequest(url, obj, callback) {
@@ -22,7 +22,7 @@ function doRequest(url, obj, callback) {
         error: function (x, y, z) { print('Received Invalid Response:' + JSON.stringify(x) + y + z); },
         success: function (data) {
             print("Received Response: " + data);
-            //$.extend(RESPONSE, $.parseJSON(data));
+            $.extend(true,RESPONSE, data);
             callback();
         }
     });
