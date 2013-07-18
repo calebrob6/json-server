@@ -117,7 +117,7 @@ public class Game {
 		if(getPlayerById(id).getAuth() == auth){
 			return gameHook.getStatus();
 		}else{
-			return new JSONObject("{\"ERROR\":4}"); //error 4 means id and auth don't match
+			return new JSONObject("{\"ERROR\":\"4\"}"); //error 4 means id and auth don't match
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class Game {
 		if(getPlayerById(id).getAuth() == auth){
 			return gameHook.doCommand(command);
 		}else{
-			return new JSONObject("{\"ERROR\":4}"); //error 4 means id and auth don't match
+			return new JSONObject("{\"ERROR\":\"4\"}"); //error 4 means id and auth don't match
 		}
 	}
 

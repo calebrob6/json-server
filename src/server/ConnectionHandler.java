@@ -80,6 +80,7 @@ public class ConnectionHandler implements HttpHandler {
 		
 		if(Debugger.DEBUG){
 			System.out.println("REQUEST STRING: " + requestString);
+			System.out.println("REQUEST METHOD: " + requestMethod);
 		}
 
 		/*
@@ -90,36 +91,36 @@ public class ConnectionHandler implements HttpHandler {
 		 * responseBuffer is a StringBuilder that you write your return data to in JSON format
 		 * httpResponseCode is an int that holds what response code you want to return
 		 */
-		
-		if (uri.equals("/connect")) {
-			JSONObject playerData = game.doConnect();
-			responseBuffer.append(playerData.toString());
-			if(Debugger.DEBUG){
-				System.out.println(playerData.toString());
-			}
-		} else if (uri.equals("/game/status")) {
-			
-			try {
-				responseBuffer.append(game.getStatus(new JSONObject(requestString)).toString());
-			} catch (JSONException e) {
-				e.printStackTrace(); // something bad happened
-			}
-			
-		} else if (uri.equals("/game/move")) {
-			
-			try{
-				responseBuffer.append(game.doCommand(new JSONObject(requestString)));
-			}catch(JSONException e){
-				e.printStackTrace(); // something bad happened
-			}
-			
-
-		} else {
-			if(Debugger.DEBUG){
-				System.out.println("Recieved: " + requestString + " for: " + uri);
+		if (requestMethod.equalsIgnoreCase("POST")) {
+			if (uri.equals("/connect")) {
+				JSONObject playerData = game.doConnect();
+				responseBuffer.append(playerData.toString());
+				if(Debugger.DEBUG){
+					System.out.println(playerData.toString());
+				}
+			} else if (uri.equals("/game/status")) {
+				
+				try {
+					responseBuffer.append(game.getStatus(new JSONObject(requestString)).toString());
+				} catch (JSONException e) {
+					e.printStackTrace(); // something bad happened
+				}
+				
+			} else if (uri.equals("/game/move")) {
+				
+				try{
+					responseBuffer.append(game.doCommand(new JSONObject(requestString)));
+				}catch(JSONException e){
+					e.printStackTrace(); // something bad happened
+				}
+				
+	
+			} else {
+				if(Debugger.DEBUG){
+					System.out.println("Recieved: " + requestString + " for: " + uri);
+				}
 			}
 		}
-
 
 		//this section sends back the return data
 		try {
@@ -132,6 +133,8 @@ public class ConnectionHandler implements HttpHandler {
 			Headers h = t.getResponseHeaders();
 		    h.add("Content-Type", "application/jsonp; charset=UTF-8");
 		    h.add("Access-Control-Allow-Origin","*");
+		    h.add("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+		    h.add("Access-Control-Allow-Methods","POST, GET, OPTIONS");
 			
 			t.sendResponseHeaders(httpResponseCode, response.length());
 			os = t.getResponseBody();
