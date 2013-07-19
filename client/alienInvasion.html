@@ -6,12 +6,15 @@
 
 var RESPONSE = {};
 
+var canvas;
+var ctx;
+
 function print(str) {
     $('#divMsg').append("<p>" + str + "</p>");
 }
 
 function doRequest(url, obj, callback) {
-    print("Sending Request: " + JSON.stringify(obj));
+    //print("Sending Request: " + JSON.stringify(obj));
     $.ajax({
         type: 'POST',
         url: "http://localhost:8000" + url,
@@ -21,9 +24,11 @@ function doRequest(url, obj, callback) {
         crossDomain: 'true',
         error: function (x, y, z) { print('Received Invalid Response:' + JSON.stringify(x) + y + z); },
         success: function (data) {
-            print("Received Response: " + data);
+            //console.debug("Received Response: " + JSON.stringify(data));
             $.extend(true,RESPONSE, data);
-            callback();
+			if(typeof callback == "function"){
+				callback();
+			}
         }
     });
 }
@@ -31,6 +36,7 @@ function doRequest(url, obj, callback) {
 /* States */
 function connected() {
     print("Connected: ID=" + RESPONSE['ID']);
+	gameLoop();
 }
 
 /* Transitions */
@@ -48,7 +54,39 @@ function game_status(id, auth, game) {
 
 $(document).ready(function () {
     connect();
+	
+	canvas=document.getElementById('map')
+	ctx=canvas.getContext('2d');
+	ctx.fillStyle   = '#00f'; // blue
+	ctx.strokeStyle = '#f00'; // red
+	
 });
+
+function gameLoop(){
+	//ctx.clearRect(0, 0, canvas.width, canvas.height);
+	if(RESPONSE['MAP']){
+	
+		for(var i=0;i<RESPONSE['MAP'].length;i++){
+			//ctx.beginPath();
+			//ctx.arc(parseInt(RESPONSE['MAP'][i]['X']), parseInt(RESPONSE['MAP'][i]['Y']), 30, 0, Math.PI*2, true); 
+			//ctx.closePath();
+			if(RESPONSE.MAP[i].ID==0){
+				ctx.fillStyle   = '#00f';
+			}else if(RESPONSE.MAP[i].ID==1){
+				ctx.fillStyle   = '#f00';
+			}else{
+				ctx.fillStyle   = '#000';
+			}
+			ctx.fillRect(parseInt(RESPONSE['MAP'][i]['X'])/2,parseInt(RESPONSE['MAP'][i]['Y'])/2,10,10)
+		}
+	
+	}
+	doRequest("/game/status", {"ID": RESPONSE['ID'], "AUTH": RESPONSE['AUTH'], "GAMEID": RESPONSE['GAMEID']}, gameLoop)
+}
+
+function doLoop(){
+	doRequest("/game/status", {"ID": id, "AUTH": auth, "GAMEID": game},gameLoop)
+}
 
 /*
 
@@ -69,7 +107,11 @@ $.ajax({
 </script>
 </head>
 <body>
-<div id='divMsg'>
-</div>
+	<div id='divCanvas'>
+		<canvas id="map" height="600" width="800">
+		</canvas>
+	</div>
+	<div id="divMsg">
+	</div>
 </body>
 </html>
