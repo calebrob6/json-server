@@ -34,13 +34,20 @@ public class Planet {
 	}
 
 	public static Planet[] getMap() {
-		return new Planet[] { new Planet(p0base, 0, 250, 0),
-				new Planet(p1base, 1000, 250, 1), new Planet(city, 500, 0, 2),
-				new Planet(city, 500, 500, 3), new Planet(fortress, 500, 250, 4),
-				new Planet(village, 250, 125, 5), new Planet(village, 250, 250, 6),
-				new Planet(village, 250, 375, 7), new Planet(village, 500, 125, 8),
-				new Planet(village, 500, 375, 9), new Planet(village, 750, 125, 10),
-				new Planet(village, 750, 250, 11), new Planet(village, 750, 375, 12), };
+		return new Planet[] { 
+				new Planet(p0base, 0, 250, 0),
+				new Planet(p1base, 1000, 250, 1), 
+				new Planet(city, 500, 0, 2),
+				new Planet(city, 500, 500, 3),
+				new Planet(fortress, 500, 250, 4),
+				new Planet(village, 250, 125, 5),
+				new Planet(village, 250, 250, 6),
+				new Planet(village, 250, 375, 7),
+				new Planet(village, 500, 125, 8),
+				new Planet(village, 500, 375, 9),
+				new Planet(village, 750, 125, 10),
+				new Planet(village, 750, 250, 11),
+				new Planet(village, 750, 375, 12), };
 	}
 
 	public void attack(PendingAttack attack) {

@@ -9,6 +9,10 @@ var RESPONSE = {};
 var canvas;
 var ctx;
 
+function isIn(haystack,needle){
+	return haystack.indexOf(needle) != -1;
+}
+
 function getRandomInt(min, max){
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -113,13 +117,20 @@ function gameLoop(){
 				p = RESPONSE.MAP[i];
 				
 				if(p.ID == RESPONSE.ID){ //we own the planet
-					//if(p.TROOPS > 10){
+					if(p.TROOPS > 10){
+						var checkedPlanets = []
 						var randomPlanet = getRandomInt(0,RESPONSE.MAP.length-1);
-						while(RESPONSE.MAP[randomPlanet].ID == RESPONSE.ID){
+						while(RESPONSE.MAP[randomPlanet].ID == RESPONSE.ID && checkedPlanets.length != RESPONSE.MAP.length){
 							randomPlanet = getRandomInt(0,RESPONSE.MAP.length-1);
+							if(!isIn(checkedPlanets,randomPlanet)){
+								checkedPlanets.push(randomPlanet);
+							}
+							if(checkedPlanets.length == RESPONSE.MAP.length){
+								print("Nowhere to go"); //this is when we own the entire map.
+							}
 						}
 						doRequest("/game/move", {"ID": RESPONSE.ID, "AUTH": RESPONSE.AUTH, "GAMEID": RESPONSE.GAMEID, "FROM": i, "TO": randomPlanet});
-					//}
+					}
 				}
 				
 			}
