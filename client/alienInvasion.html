@@ -9,6 +9,16 @@ var RESPONSE = {};
 var canvas;
 var ctx;
 
+function getColor(i){
+	if(i==0){
+		return '#00f'; //blue
+	}else if(i==1){
+		return '#f00'; //red
+	}else{
+		return '#000'; //black
+	}
+}
+
 function print(str) {
     $('#divMsg').append("<p>" + str + "</p>");
 }
@@ -63,30 +73,35 @@ $(document).ready(function () {
 });
 
 function gameLoop(){
-	//ctx.clearRect(0, 0, canvas.width, canvas.height);
-	if(RESPONSE['MAP']){
+	ctx.fillStyle = '#fff';
+	ctx.clearRect(0, 0, canvas.width, canvas.height);
+	if(RESPONSE.MAP){
 	
-		for(var i=0;i<RESPONSE['MAP'].length;i++){
-			//ctx.beginPath();
-			//ctx.arc(parseInt(RESPONSE['MAP'][i]['X']), parseInt(RESPONSE['MAP'][i]['Y']), 30, 0, Math.PI*2, true); 
-			//ctx.closePath();
-			if(RESPONSE.MAP[i].ID==0){
-				ctx.fillStyle   = '#00f';
-			}else if(RESPONSE.MAP[i].ID==1){
-				ctx.fillStyle   = '#f00';
-			}else{
-				ctx.fillStyle   = '#000';
-			}
-			ctx.fillRect(parseInt(RESPONSE['MAP'][i]['X'])/2,parseInt(RESPONSE['MAP'][i]['Y'])/2,10,10)
+		for(var i=0;i<RESPONSE.MAP.length;i++){
+			ctx.fillStyle = getColor(RESPONSE.MAP[i].ID);
+			ctx.fillRect(parseInt(RESPONSE.MAP[i].X)/2,parseInt(RESPONSE.MAP[i].Y)/2,10,10)
 		}
 	
 	}
+	
+	if(RESPONSE.ATTACKS){
+		
+		for(var i=0;i<RESPONSE.ATTACKS.length;i++){
+			var a = RESPONSE.ATTACKS[i];
+			ctx.fillStyle = getColor(a.ATTACKERID);
+			ctx.strokeStyle = getColor(a.ATTACKERID)
+			ctx.moveTo(RESPONSE.MAP[a.ATTACKERPLANETID].X/2+5,RESPONSE.MAP[a.ATTACKERPLANETID].Y/2+5);
+			ctx.lineTo(RESPONSE.MAP[a.TARGETID].X/2+5,RESPONSE.MAP[a.TARGETID].Y/2+5);
+			ctx.stroke();
+		}
+	
+	}
+	
+	
+	
 	doRequest("/game/status", {"ID": RESPONSE['ID'], "AUTH": RESPONSE['AUTH'], "GAMEID": RESPONSE['GAMEID']}, gameLoop)
 }
 
-function doLoop(){
-	doRequest("/game/status", {"ID": id, "AUTH": auth, "GAMEID": game},gameLoop)
-}
 
 /*
 
