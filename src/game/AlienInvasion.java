@@ -103,6 +103,7 @@ public class AlienInvasion implements GenGame {
 			response.put("STATUS", getStatus());
 			return response;
 		}
+		
 		if (isValid(fromPlanetNumber, player)) {
 			attackQueue.add(Planet.startAttack(board[fromPlanetNumber], board[toPlanetNumber],
 					tick));

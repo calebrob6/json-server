@@ -9,13 +9,16 @@ public class PendingAttack implements Comparable<PendingAttack>{
 	private int attackerId;
 	private int attackPower;
 	private int attackTroops;
+	private int attackerPlanetId;
+	
 	public PendingAttack(int arrivalTick, Planet targetPlanet, int attackerId,
-			int attackPower, int attackTroops) {
+			int attackPower, int attackTroops,int attackerPlanetId) {
 		this.arrivalTick = arrivalTick;
 		this.targetPlanet = targetPlanet;
 		this.attackerId = attackerId;
 		this.attackPower = attackPower;
 		this.attackTroops = attackTroops;
+		this.attackerPlanetId = attackerPlanetId;
 	}
 	public int getArrivalTick() {
 		return arrivalTick;
@@ -47,6 +50,7 @@ public class PendingAttack implements Comparable<PendingAttack>{
 			json.put("TROOPS", attackTroops);
 			json.put("TARGETID", targetPlanet.getId());
 			json.put("TICK", arrivalTick);
+			json.put("ATTACKERPLANETID", attackerPlanetId);
 		} catch (JSONException e) {
 			// this should never happen
 			System.out.println("The World Ended");
@@ -63,7 +67,7 @@ public class PendingAttack implements Comparable<PendingAttack>{
 			int planetNum = json.getInt("TARGETID");
 			Planet target = board[planetNum];
 			attack = new PendingAttack(json.getInt("TICK"), target, json.getInt("ATTACKERID"), 
-					json.getInt("POWER"), json.getInt("TROOPS"));
+					json.getInt("POWER"), json.getInt("TROOPS"), json.getInt("ATTACKERPLANETID"));
 		}
 		catch (JSONException e)
 		{
