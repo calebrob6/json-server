@@ -8,8 +8,6 @@ import org.json.JSONObject;
 
 public class Game {
 	
-	
-	
 	public volatile boolean running = false;
 	public Player[] players = new Player[GameManager.MAX_PLAYERS];
 	private AtomicInteger pCount = new AtomicInteger(0);

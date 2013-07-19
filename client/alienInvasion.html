@@ -9,6 +9,25 @@ var RESPONSE = {};
 var canvas;
 var ctx;
 
+var prevMap = {};
+var map = {};
+
+var Player = function(){
+	this.id = "";
+	this.gameid = "";
+	this.auth = "";
+}
+
+function getLostPlanets(){
+	planetsLost = [];
+	for(var i=0;i<prevMap.length;i++){
+		if(prevMap[i].ID == RESPONSE.ID && map[i].ID != RESPONSE.ID){ //we had the planet last tick, now we don't
+			planetsLost.push(i);
+		}
+	}
+	return planetsLost;
+}
+
 function isIn(haystack,needle){
 	return haystack.indexOf(needle) != -1;
 }
@@ -112,7 +131,7 @@ function gameLoop(){
 			}
 		}
 		
-		if(RESPONSE.MAP){ //DRAW PLANETS
+		if(RESPONSE.MAP){
 			for(var i=0;i<RESPONSE.MAP.length;i++){
 				p = RESPONSE.MAP[i];
 				
