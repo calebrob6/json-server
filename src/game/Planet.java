@@ -127,7 +127,7 @@ public class Planet {
 		int arrivalTick = timeTaken + currentTick;
 		int attackTroops = from.troopCount / 2;
 		from.troopCount -= attackTroops;
-		return new PendingAttack(arrivalTick, to, from.ownerId, from.attack, attackTroops);
+		return new PendingAttack(arrivalTick, to, from.ownerId, from.attack, attackTroops, from.id);
 	}
 	public JSONObject toJSON()
 	{

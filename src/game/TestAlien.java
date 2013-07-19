@@ -21,8 +21,8 @@ public class TestAlien {
 			assert a.getX() == b.getX();
 			assert a.getY() == b.getY();
 		}
-
-		PendingAttack pa = new PendingAttack(37, planets[3], 42, 100, 100);
+		//--Caleb: added ,0 to the end of this to represent where the attack is coming from, not sure if this is right or not?
+		PendingAttack pa = new PendingAttack(37, planets[3], 42, 100, 100, 0);
 		JSONObject json = pa.toJSON();
 		PendingAttack pa2 = PendingAttack.fromJSON(json, planets);
 		assert pa.getArrivalTick() == pa2.getArrivalTick();
