@@ -9,6 +9,10 @@ var RESPONSE = {};
 var canvas;
 var ctx;
 
+function getRandomInt(min, max){
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 function getColor(i){
 	if(i==0){
 		return '#00f'; //blue
@@ -46,7 +50,7 @@ function doRequest(url, obj, callback) {
 /* States */
 function connected() {
     print("Connected: ID=" + RESPONSE['ID']);
-	gameLoop();
+	doRequest("/game/status", {"ID": RESPONSE['ID'], "AUTH": RESPONSE['AUTH'], "GAMEID": RESPONSE['GAMEID']}, gameLoop); //run the first status request to get us started
 }
 
 /* Transitions */
@@ -73,33 +77,66 @@ $(document).ready(function () {
 });
 
 function gameLoop(){
-	ctx.fillStyle = '#fff';
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-	if(RESPONSE.MAP){
-	
-		for(var i=0;i<RESPONSE.MAP.length;i++){
-			ctx.fillStyle = getColor(RESPONSE.MAP[i].ID);
-			ctx.fillRect(parseInt(RESPONSE.MAP[i].X)/2,parseInt(RESPONSE.MAP[i].Y)/2,10,10)
-		}
-	
-	}
-	
-	if(RESPONSE.ATTACKS){
+
+	if(RESPONSE.WHOWON == -1){
+		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
-		for(var i=0;i<RESPONSE.ATTACKS.length;i++){
-			var a = RESPONSE.ATTACKS[i];
-			ctx.fillStyle = getColor(a.ATTACKERID);
-			ctx.strokeStyle = getColor(a.ATTACKERID)
-			ctx.moveTo(RESPONSE.MAP[a.ATTACKERPLANETID].X/2+5,RESPONSE.MAP[a.ATTACKERPLANETID].Y/2+5);
-			ctx.lineTo(RESPONSE.MAP[a.TARGETID].X/2+5,RESPONSE.MAP[a.TARGETID].Y/2+5);
-			ctx.stroke();
+		if(RESPONSE.MAP){ //DRAW PLANETS
+			for(var i=0;i<RESPONSE.MAP.length;i++){
+				ctx.fillStyle = getColor(RESPONSE.MAP[i].ID);
+				ctx.fillRect(parseInt(RESPONSE.MAP[i].X)/2,parseInt(RESPONSE.MAP[i].Y)/2,10,10)
+			}
+		}
+		
+		if(RESPONSE.ATTACKS){ //DRAW ATTACKS
+			
+			//note... because we are keeping everything in RESPONSE we will have all of the old attacks, so we need to check for current ones
+		 
+			for(var i=0;i<RESPONSE.ATTACKS.length;i++){
+				if(RESPONSE.TICK <= RESPONSE.ATTACKS[i].TICK){ //so only render the current attacks
+					var a = RESPONSE.ATTACKS[i];
+					ctx.fillStyle = getColor(a.ATTACKERID);
+					ctx.strokeStyle = getColor(a.ATTACKERID)
+					ctx.beginPath();
+					ctx.moveTo(RESPONSE.MAP[a.ATTACKERPLANETID].X/2+5,RESPONSE.MAP[a.ATTACKERPLANETID].Y/2+5);
+					ctx.lineTo(RESPONSE.MAP[a.TARGETID].X/2+5,RESPONSE.MAP[a.TARGETID].Y/2+5);
+					ctx.stroke();
+					ctx.closePath();
+				}else{
+					console.debug("grumble....");
+				}
+			}
+		}
+		
+		if(RESPONSE.MAP){ //DRAW PLANETS
+			for(var i=0;i<RESPONSE.MAP.length;i++){
+				p = RESPONSE.MAP[i];
+				
+				if(p.ID == RESPONSE.ID){ //we own the planet
+					//if(p.TROOPS > 10){
+						var randomPlanet = getRandomInt(0,RESPONSE.MAP.length-1);
+						while(RESPONSE.MAP[randomPlanet].ID == RESPONSE.ID){
+							randomPlanet = getRandomInt(0,RESPONSE.MAP.length-1);
+						}
+						doRequest("/game/move", {"ID": RESPONSE.ID, "AUTH": RESPONSE.AUTH, "GAMEID": RESPONSE.GAMEID, "FROM": i, "TO": randomPlanet});
+					//}
+				}
+				
+			}
+		}
+		
+		RESPONSE.MAP = [];
+		
+		doRequest("/game/status", {"ID": RESPONSE['ID'], "AUTH": RESPONSE['AUTH'], "GAMEID": RESPONSE['GAMEID']}, gameLoop)
+	}else{
+	
+		if(RESPONSE.WHOWON == RESPONSE.ID){
+			print("We won!!!!");
+		}else{
+			print("We lost :(");
 		}
 	
 	}
-	
-	
-	
-	doRequest("/game/status", {"ID": RESPONSE['ID'], "AUTH": RESPONSE['AUTH'], "GAMEID": RESPONSE['GAMEID']}, gameLoop)
 }
 
 
@@ -123,7 +160,7 @@ $.ajax({
 </head>
 <body>
 	<div id='divCanvas'>
-		<canvas id="map" height="600" width="800">
+		<canvas id="map" height="300" width="600">
 		</canvas>
 	</div>
 	<div id="divMsg">
