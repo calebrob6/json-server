@@ -30,13 +30,13 @@ function print(str) {
 function doRequest(url, obj, callback) {
     //print("Sending Request: " + JSON.stringify(obj));
     $.ajax({
-        type: 'POST',
+        type: "POST",
         url: "http://localhost:8000" + url,
         data: JSON.stringify(obj),
 		contentType:"application/json; charset=utf-8",
 		dataType:"json",
         crossDomain: 'true',
-        error: function (x, y, z) { print('Received Invalid Response:' + JSON.stringify(x) + y + z); },
+        error: function (x, y, z) { print("Received Invalid Response:" + JSON.stringify(x) + y + z); },
         success: function (data) {
             //console.debug("Received Response: " + JSON.stringify(data));
             $.extend(true,RESPONSE, data);
@@ -78,7 +78,7 @@ $(document).ready(function () {
 
 function gameLoop(){
 
-	if(RESPONSE.WHOWON == -1){
+	if(RESPONSE.RUNNING){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
 		
 		if(RESPONSE.MAP){ //DRAW PLANETS
