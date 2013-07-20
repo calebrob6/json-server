@@ -17,20 +17,22 @@ public class TestAlien {
 			assert a.getTroopsPerTick() == b.getTroopsPerTick();
 			assert a.getMaxCapacity() == b.getMaxCapacity();
 			assert a.getOwnerId() == b.getOwnerId();
-			assert a.getId() == b.getId();
+			assert a.getPlanetId() == b.getPlanetId();
 			assert a.getX() == b.getX();
 			assert a.getY() == b.getY();
 		}
-		//--Caleb: added ,0 to the end of this to represent where the attack is coming from, not sure if this is right or not?
-		PendingAttack pa = new PendingAttack(37, planets[3], 42, 100, 100, 0);
+		
+		PendingAttack pa = new PendingAttack(37, 34, planets[3], 42, 100, planets[0]);
 		JSONObject json = pa.toJSON();
 		PendingAttack pa2 = PendingAttack.fromJSON(json, planets);
 		assert pa.getArrivalTick() == pa2.getArrivalTick();
+		assert pa.getStartTick() == pa2.getStartTick();
 		assert pa.getAttackerId() == pa2.getAttackerId();
-		assert pa.getAttackPower() == pa2.getAttackPower();
 		assert pa.getAttackTroops() == pa2.getAttackTroops();
 		assert pa.getTargetPlanet() == pa2.getTargetPlanet()
 				&& pa2.getTargetPlanet() == planets[3];
+		assert pa.getAttackerPlanet() == pa2.getAttackerPlanet()
+				&& pa2.getAttackerPlanet() == planets[0];
 		
 		for(Planet p : planets)
 		{
@@ -51,10 +53,10 @@ public class TestAlien {
 		{
 			for(Planet to : planets)
 			{
-				if(to.getId() != from.getId())
+				if(to.getPlanetId() != from.getPlanetId())
 				{
 					PendingAttack attack = Planet.startAttack(from, to, 0);
-					System.out.println("Attacking from " + from.getId() + " to " + to.getId() + " takes " + attack.getArrivalTick() + " ticks.");
+					System.out.println("Attacking from " + from.getPlanetId() + " to " + to.getPlanetId() + " takes " + attack.getArrivalTick() + " ticks.");
 				}
 			}
 		}

@@ -73,8 +73,8 @@ public class AlienInvasionClient {
 	{
 		JSONObject req = new JSONObject();
 		try {
-			req.put("FROM", base.getId());
-			req.put("TO", target.getId());
+			req.put("FROM", base.getPlanetId());
+			req.put("TO", target.getPlanetId());
 			req.put("ID", playerId);
 			req.put("AUTH", playerAuth);
 			req.put("GAMEID", gameId);

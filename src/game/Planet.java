@@ -13,7 +13,7 @@ public class Planet {
 	private int attack;
 	private int defense;
 	private int speed;
-	private int id;
+	private int planetId;
 	public static PlanetType p0base = new PlanetType(0, 20, 200, 3, 100, 100, 100);
 	public static PlanetType p1base = new PlanetType(1, 20, 200, 3, 100, 100, 100);
 	public static PlanetType city = new PlanetType(-1, 50, 150, 2, 90, 90, 100);
@@ -30,7 +30,7 @@ public class Planet {
 		this.attack = type.getAttack();
 		this.defense = type.getDefense();
 		this.speed = type.getSpeed();
-		this.id = id;
+		this.planetId = id;
 	}
 
 	public static Planet[] getMap() {
@@ -58,12 +58,12 @@ public class Planet {
 				troopCount = maxCapacity; // enforce capacity limits
 			return;
 		}
-		int attackForce = attack.getAttackTroops() * attack.getAttackPower();
+		int attackForce = attack.getAttackTroops() * attack.getAttackerPlanet().attack;
 		int defenseForce = defense * troopCount;
 		if (attackForce > defenseForce) // attacker wins
 		{
 			int survivors = (attackForce - defenseForce)
-					/ attack.getAttackPower();
+					/ attack.getAttackerPlanet().attack;
 			if (survivors > 0) // the attacker must have at least one survivor
 								// to occupy
 			{
@@ -73,7 +73,7 @@ public class Planet {
 		} else // defender wins
 		{
 
-			troopCount = (defenseForce - attackForce) / attack.getAttackPower();
+			troopCount = (defenseForce - attackForce) / attack.getAttackerPlanet().attack;
 		}
 		if (troopCount > 1) {
 			troopCount = 1; // the defense always get at least one troop if
@@ -124,8 +124,8 @@ public class Planet {
 		return speed;
 	}
 
-	public int getId() {
-		return id;
+	public int getPlanetId() {
+		return planetId;
 	}
 
 	public static PendingAttack startAttack(Planet from, Planet to, int currentTick) {
@@ -134,7 +134,7 @@ public class Planet {
 		int arrivalTick = timeTaken + currentTick;
 		int attackTroops = from.troopCount / 2;
 		from.troopCount -= attackTroops;
-		return new PendingAttack(arrivalTick, to, from.ownerId, from.attack, attackTroops, from.id);
+		return new PendingAttack(arrivalTick, currentTick, to, from.ownerId, attackTroops, from);
 	}
 	public JSONObject toJSON()
 	{
@@ -149,7 +149,7 @@ public class Planet {
 			json.put("TROOPS", troopCount);
 			json.put("GROWTH", troopsPerTick);
 			json.put("CAPACITY", maxCapacity);
-			json.put("PLANETID", id);
+			json.put("PLANETID", planetId);
 		} catch (JSONException e) {
 			// this should never happen
 			System.out.println("The World Ended");

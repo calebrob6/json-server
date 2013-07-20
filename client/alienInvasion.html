@@ -91,30 +91,30 @@ function game_status(id, auth, game) {
 
 $(document).ready(function () {
     connect();
-	
+
 	canvas=document.getElementById('map')
 	ctx=canvas.getContext('2d');
 	ctx.fillStyle   = '#00f'; // blue
 	ctx.strokeStyle = '#f00'; // red
-	
+
 });
 
 function gameLoop(){
 
 	if(RESPONSE.RUNNING){
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		
+
 		if(RESPONSE.MAP){ //DRAW PLANETS
 			for(var i=0;i<RESPONSE.MAP.length;i++){
 				ctx.fillStyle = getColor(RESPONSE.MAP[i].ID);
 				ctx.fillRect(parseInt(RESPONSE.MAP[i].X)/2,parseInt(RESPONSE.MAP[i].Y)/2,10,10)
 			}
 		}
-		
+
 		if(RESPONSE.ATTACKS){ //DRAW ATTACKS
-			
+
 			//note... because we are keeping everything in RESPONSE we will have all of the old attacks, so we need to check for current ones
-		 
+
 			for(var i=0;i<RESPONSE.ATTACKS.length;i++){
 				if(RESPONSE.TICK <= RESPONSE.ATTACKS[i].TICK){ //so only render the current attacks
 					var a = RESPONSE.ATTACKS[i];
@@ -122,7 +122,7 @@ function gameLoop(){
 					ctx.strokeStyle = getColor(a.ATTACKERID)
 					ctx.beginPath();
 					ctx.moveTo(RESPONSE.MAP[a.ATTACKERPLANETID].X/2+5,RESPONSE.MAP[a.ATTACKERPLANETID].Y/2+5);
-					ctx.lineTo(RESPONSE.MAP[a.TARGETID].X/2+5,RESPONSE.MAP[a.TARGETID].Y/2+5);
+					ctx.lineTo(RESPONSE.MAP[a.TARGETID].X/2+5,RESPONSE.MAP[a.TARGETPLANETID].Y/2+5);
 					ctx.stroke();
 					ctx.closePath();
 				}else{
@@ -130,11 +130,11 @@ function gameLoop(){
 				}
 			}
 		}
-		
+
 		if(RESPONSE.MAP){
 			for(var i=0;i<RESPONSE.MAP.length;i++){
 				p = RESPONSE.MAP[i];
-				
+
 				if(p.ID == RESPONSE.ID){ //we own the planet
 					if(p.TROOPS > 10){
 						var checkedPlanets = []
@@ -151,21 +151,21 @@ function gameLoop(){
 						doRequest("/game/move", {"ID": RESPONSE.ID, "AUTH": RESPONSE.AUTH, "GAMEID": RESPONSE.GAMEID, "FROM": i, "TO": randomPlanet});
 					}
 				}
-				
+
 			}
 		}
-		
+
 		RESPONSE.MAP = [];
-		
+
 		doRequest("/game/status", {"ID": RESPONSE['ID'], "AUTH": RESPONSE['AUTH'], "GAMEID": RESPONSE['GAMEID']}, gameLoop)
 	}else{
-	
+
 		if(RESPONSE.WHOWON == RESPONSE.ID){
 			print("We won!!!!");
 		}else{
 			print("We lost :(");
 		}
-	
+
 	}
 }
 
