@@ -115,6 +115,20 @@ public class AlienInvasionClient {
 		return AlienGameState.parse(resp, playerId);
 	}
 	
+	public void startAttack(Planet target, Planet base)
+	{
+		AsycAttack async = new AsycAttack();
+		async.from = base;
+		async.to = target;
+		try {
+			async.url = new URL("http://"+hostname+":"+port+attack);
+		} catch (MalformedURLException e) {
+			//oops
+		}
+		Thread thread = new Thread(async);
+		thread.start();
+	}
+	
 	public AlienGameState getStatus()
 	{
 		JSONObject req = new JSONObject();
@@ -158,5 +172,55 @@ public class AlienInvasionClient {
 		return AlienGameState.parse(resp, playerId);
 	}
 	
+	private class AsycAttack implements Runnable
+	{
+		public Planet to;
+		public Planet from;
+		public URL url;
+
+		public void run() {
+			JSONObject req = new JSONObject();
+			try {
+				req.put("FROM", from.getPlanetId());
+				req.put("TO", to.getPlanetId());
+				req.put("ID", playerId);
+				req.put("AUTH", playerAuth);
+				req.put("GAMEID", gameId);
+			} catch (JSONException e1) {
+				e1.printStackTrace();
+			}
+			String response = "";
+			JSONObject resp = null;
+			String data;
+			try {
+				data = URLEncoder.encode(req.toString(), "UTF-8");
+				// Send data
+				URLConnection conn = url.openConnection();
+				conn.setDoOutput(true);
+				OutputStreamWriter wr = new OutputStreamWriter(
+						conn.getOutputStream());
+				wr.write(data);
+				wr.flush();
+
+				// Get the response
+				BufferedReader rd = new BufferedReader(new InputStreamReader(
+						conn.getInputStream()));
+				String line;
+				while ((line = rd.readLine()) != null) {
+					response += line;
+					// System.out.println(line);
+				}
+				wr.close();
+				rd.close();
+				resp = new JSONObject(response);
+
+			} catch (Exception e) { // PRO error handling!
+
+			} 
+			
+
+		}
+		
+	}
 
 }

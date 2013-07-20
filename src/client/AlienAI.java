@@ -20,7 +20,7 @@ public class AlienAI {
 			if(ripePlanets.size() > 0 && state.getMyPlanets().size() > 0)
 			{
 				//long start = System.currentTimeMillis();
-				client.attack(ripePlanets.get(rand.nextInt(ripePlanets.size())), state.getMyPlanets().get(rand.nextInt(state.getMyPlanets().size())));
+				client.startAttack(ripePlanets.get(rand.nextInt(ripePlanets.size())), state.getMyPlanets().get(rand.nextInt(state.getMyPlanets().size())));
 				//long end = System.currentTimeMillis();
 				//System.out.println(end - start);
 			}
