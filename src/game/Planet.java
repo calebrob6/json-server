@@ -14,10 +14,10 @@ public class Planet {
 	private int defense;
 	private int speed;
 	private int planetId;
-	public static PlanetType p0base = new PlanetType(0, 20, 200, 3, 100, 100, 100);
-	public static PlanetType p1base = new PlanetType(1, 20, 200, 3, 100, 100, 100);
-	public static PlanetType city = new PlanetType(-1, 50, 150, 2, 90, 90, 100);
-	public static PlanetType village = new PlanetType(-1, 20, 100, 2, 75, 75, 75);
+	public static PlanetType p0base = new PlanetType(0, 20, 200, 3, 100, 100, 125);
+	public static PlanetType p1base = new PlanetType(1, 20, 200, 3, 100, 100, 125);
+	public static PlanetType city = new PlanetType(-1, 50, 150, 2, 90, 75, 100);
+	public static PlanetType village = new PlanetType(-1, 20, 100, 2, 75, 90, 75);
 	public static PlanetType fortress = new PlanetType(-1, 50, 50, 0, 200, 200, 25);
 
 	public Planet(PlanetType type, double x, double y, int id) {
