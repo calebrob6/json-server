@@ -116,13 +116,13 @@ function gameLoop(){
 			//note... because we are keeping everything in RESPONSE we will have all of the old attacks, so we need to check for current ones
 
 			for(var i=0;i<RESPONSE.ATTACKS.length;i++){
-				if(RESPONSE.TICK <= RESPONSE.ATTACKS[i].TICK){ //so only render the current attacks
+				if(RESPONSE.TICK <= RESPONSE.ATTACKS[i].ARRIVETICK){ //so only render the current attacks
 					var a = RESPONSE.ATTACKS[i];
 					ctx.fillStyle = getColor(a.ATTACKERID);
 					ctx.strokeStyle = getColor(a.ATTACKERID)
 					ctx.beginPath();
 					ctx.moveTo(RESPONSE.MAP[a.ATTACKERPLANETID].X/2+5,RESPONSE.MAP[a.ATTACKERPLANETID].Y/2+5);
-					ctx.lineTo(RESPONSE.MAP[a.TARGETID].X/2+5,RESPONSE.MAP[a.TARGETPLANETID].Y/2+5);
+					ctx.lineTo(RESPONSE.MAP[a.TARGETPLANETID].X/2+5,RESPONSE.MAP[a.TARGETPLANETID].Y/2+5);
 					ctx.stroke();
 					ctx.closePath();
 				}else{
